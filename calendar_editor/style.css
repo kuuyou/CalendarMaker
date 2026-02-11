@@ -1,0 +1,180 @@
+:root{
+  /* card */
+  --card-w: 980px;
+  --card-h: 760px;
+  --card-bg: #ffffff;
+  --card-pad: 28px;
+  --card-margin: 0px;
+  --card-radius: 18px;
+
+  --shadow-a: 0.18;
+  --shadow-blur: 28px;
+  --shadow-y: 12px;
+
+  /* grid layout */
+  --grid-gap: 10px;
+  --cell-radius: 10px;
+  --cell-pad-y: 10px;
+
+  /* weekday header */
+  --wd-font: system-ui;
+  --wd-size: 16px;
+  --wd-color: #333333;
+  --wd-line: 1.2;
+
+  /* date number */
+  --dt-font: system-ui;
+  --dt-size: 18px;
+  --dt-color: #111111;
+  --dt-line: 1.1;
+}
+
+*{ box-sizing: border-box; }
+html,body{ height: 100%; }
+body{
+  margin: 0;
+  font-family: system-ui;
+  color: #111;
+}
+
+.layout{
+  display: grid;
+  grid-template-columns: 360px 1fr;
+}
+
+.layout > .preview{
+  grid-column: 2;
+}
+
+.layout > .panel{
+  grid-column: 1;
+}
+
+.panel{
+  padding: 16px;
+  border-right: 1px solid #e6e6e6;
+  background: #fff;
+}
+
+.panel h1{ font-size: 18px; margin: 0 0 12px; }
+.panel h2{ font-size: 14px; margin: 16px 0 8px; }
+
+label{
+  display: block;
+  margin: 8px 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.inline{
+  display: flex;
+  gap: 10px;
+}
+.inline label{ flex: 1; }
+
+input[type="range"]{ width: 100%; }
+input[type="number"]{ width: 100%; padding: 6px 8px; }
+
+.row{
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+button{
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+button:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tip{
+  color: #666;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.preview{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  padding: 24px;
+}
+
+/* calendar card */
+.card{
+  width: var(--card-w);
+  height: var(--card-h);
+  margin: var(--card-margin);
+
+  background: var(--card-bg);
+  border: 1px solid #e6e6e6;
+  border-radius: var(--card-radius);
+
+  padding: var(--card-pad);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  box-shadow: 0 var(--shadow-y) var(--shadow-blur) rgba(0,0,0,var(--shadow-a));
+}
+
+.monthTitle{
+  font-size: 14px;
+  color: #666;
+  letter-spacing: 0.06em;
+  user-select: none;
+}
+
+/* grid */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--grid-gap);
+  flex: 1;
+  min-height: 0;
+}
+
+/* weekday header cell */
+.wd{
+  font-family: var(--wd-font);
+  font-size: var(--wd-size);
+  color: var(--wd-color);
+  line-height: var(--wd-line);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: 8px 0;
+  user-select: none;
+}
+
+/* date cell */
+.cell{
+  border-radius: var(--cell-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--cell-pad-y) 0;
+}
+
+/* blank cell (before 1st day) */
+.cell.blank{
+  opacity: 0;
+}
+
+/* date number */
+.cell .dt{
+  font-family: var(--dt-font);
+  font-size: var(--dt-size);
+  color: var(--dt-color);
+  line-height: var(--dt-line);
+  font-weight: 700;
+  user-select: none;
+}
