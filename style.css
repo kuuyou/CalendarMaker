@@ -551,52 +551,53 @@ button:disabled {
 /* ===== 手机：上下结构 + Tab 固定 + 页切换(不横滑) ===== */
 @media (max-width: 820px) {
 
-  /* body 不滚 */
   html,
   body {
-    height: 100% !important;
+    height: 100%;
   }
 
   body {
-    overflow: hidden !important;
+    overflow: hidden;
   }
 
-  /* 上下结构固定满屏 */
   .layout {
-    position: fixed !important;
-    inset: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    /* 你桌面是 grid，这里改成 flex，为了覆盖 grid 的声明，保留 important */
     grid-template-columns: none !important;
   }
 
   .preview {
-    position: sticky !important;
+    position: sticky;
     top: 0;
     z-index: 10;
-    height: auto !important;
-    overflow: visible !important;
-    padding: 12px !important;
+    height: auto;
+    overflow: visible;
+    padding: 12px;
   }
 
-  /* panel 自己不滚，只当容器 */
   .panel {
-    flex: 1 1 auto !important;
-    width: 100% !important;
-    border-left: none !important;
+    flex: 1 1 auto;
+    width: 100%;
+    border-left: none;
     border-top: 1px solid var(--ui-border);
-    overflow: hidden !important;
-    /* 关键：panel 不滚 */
-    padding: 12px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    min-height: 0 !important;
-    /* 关键：允许子元素滚动 */
+    padding: 12px;
+
+    /* panel 自己不滚，给 mPages 滚 */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    /* 关键：让子元素能滚 */
+    min-height: 0;
+    overscroll-behavior: contain;
   }
 
-  /* tabs 固定在 panel 顶部 */
+  /* ===== 2) Tabs：固定住 + 圆点按钮 ===== */
   .mTabs {
-    display: flex !important;
+    display: flex;
     position: sticky;
     top: 0;
     z-index: 50;
@@ -607,37 +608,66 @@ button:disabled {
     border-bottom: 1px solid rgba(2, 2, 2, 0.08);
 
     padding: 10px 6px 12px;
-    margin: 0 0 10px 0;
+    margin: 0 0 10px;
 
     gap: 8px;
-    flex-wrap: wrap;
-    /* 全部展示，不切掉 */
     justify-content: center;
     flex: 0 0 auto;
+
+    /* 圆点栏不换行，避免变大/挤成两排 */
+    flex-wrap: nowrap;
   }
 
-  /* pages 才是唯一滚动区 */
+  /* 这里必须压过全局 button padding，所以保留 important */
+  .mTabs button {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+
+    padding: 0 !important;
+    border-radius: 50% !important;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+    line-height: 1;
+
+    box-shadow: none;
+  }
+
+  .mTabs button.isActive {
+    background: #76a749;
+    color: #fff;
+  }
+
+  /* ===== 3) Pages：唯一滚动区 ===== */
   .mPages {
     flex: 1 1 auto;
     min-height: 0;
-    /* 关键：让 overflow 生效 */
+
     overflow-y: auto;
     overflow-x: hidden;
-    /* 关键：彻底禁止横向溢出 */
+
     -webkit-overflow-scrolling: touch;
     padding: 0 2px 14px;
   }
 
-  /* 每个 page 尺寸统一：占满 mPages 可视高度 */
+  /* ===== 4) Page：只显示激活页，尺寸统一 ===== */
   .mPage {
     display: none;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+
+    /* 防止里面某个元素把页面撑爆 */
     overflow: hidden;
-    /* 防止内部元素把自己撑爆 */
+
+    /* 统一高度（可滚的是 mPages，不是 mPage） */
     min-height: 100%;
-    /* 关键：统一每页高度 */
+
     margin: 0;
     padding: 0 0 14px;
   }
@@ -646,13 +676,12 @@ button:disabled {
     display: block;
   }
 
-  /* 防止控件宽度溢出导致“切割/偏移” */
+  /* 兜底：防溢出 */
   .mPage * {
     max-width: 100%;
     box-sizing: border-box;
   }
 
-  /* 特别是这些最容易撑爆 */
   input[type="number"],
   select,
   input[type="range"] {
@@ -660,43 +689,8 @@ button:disabled {
     max-width: 100%;
   }
 
-  /* 可选：如果你有某些 label/row 有负 margin 也会溢出，这里兜底 */
-  .panel {
-    overscroll-behavior: contain;
-  }
-
-  .mSatus {
+  /* 手机端不显示 “更多设置” */
+  .mStatus {
     display: none;
-  }
-
-    /* 导航圆点：强制小尺寸，不吃全局 button padding */
-  .mTabs{
-    gap: 8px;
-    justify-content: center;
-  }
-
-  .mTabs button{
-    width: 34px;
-    height: 34px;
-    padding: 0 !important;          /* 关键：干掉全局 padding */
-    border-radius: 999px;
-    min-width: 0 !important;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    font-weight: 800;
-    line-height: 1;
-    box-shadow: none;               /* 可选：更“干净” */
-  }
-
-  .mTabs button{
-    font-size: 14px;
-  }
-
-  .mTabs button.isActive{
-    background: #76a749;
-    color: #fff;
   }
 }
