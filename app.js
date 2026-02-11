@@ -135,17 +135,27 @@ const titleAlignEl = document.getElementById('titleAlign');
 bindSelect('titleFont', '--title-font');
 bindRangeNum('titleSize', '--title-size');
 bindSelect('titleAlign', '--title-align');
+bindColor('titleColor', '--title-color');
+bindColor('dividerColor', '--divider-color');
 
 function applyTitleHidden(){
   const hide = !!hideTitleEl?.checked;
+
+  // 标题隐藏/显示
   titleEl?.classList.toggle('isHidden', hide);
 
+  // 分隔线隐藏/显示（跟标题同步）
+  const dividerEl = document.getElementById('titleDivider');
+  dividerEl?.classList.toggle('isHidden', hide);
+
+  // 面板控件禁用/启用
   if (titleFontEl) titleFontEl.disabled = hide;
   if (titleSizeEl) titleSizeEl.disabled = hide;
   if (titleAlignEl) titleAlignEl.disabled = hide;
 
   updateValueDisplays();
 }
+
 
 hideTitleEl?.addEventListener('change', applyTitleHidden);
 applyTitleHidden();
@@ -177,8 +187,8 @@ function renderMonth(year, month){
     titleEl.textContent = MONTH_CN[month - 1] ?? `${month}月`;
   }
 
-  const lang = wdLangEl?.value ?? 'zh';
-  const labels = (lang === 'en') ? WEEKDAYS_EN : WEEKDAYS_ZH;
+  const lang = wdLangEl?.value ?? 'en';
+  const labels = (lang === 'zh') ? WEEKDAYS_ZH : WEEKDAYS_EN;
 
   for (const w of labels){
     const d = document.createElement('div');

@@ -1,149 +1,193 @@
 <!doctype html>
 <html lang="zh">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>企划日历生成器</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>企划日历生成器</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link rel="stylesheet" href="./style.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&
+               family=Noto+Sans+JP:wght@400;700&
+               family=Noto+Serif+SC:wght@200..900&
+               family=ZCOOL+XiaoWei&
+               family=LXGW+WenKai+Mono+TC&
+               family=Playfair+Display:ital,wght@0,400..900;1,400..900&
+               family=Qahiri&family=Raleway:ital,wght@0,100..900;1,100..900&
+               family=Roboto+Slab:wght@100..900&
+               family=WDXL+Lubrifont+SC&
+               display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
-  <div class="layout">
+    <div class="layout">
 
-    <main class="preview">
-      <div class="card" id="calendarCard">
-        <div class="monthTitle" id="monthTitle">三月</div>
-        <div class="wdGrid" id="wdGrid"></div>
-        <div class="dateGrid" id="dateGrid"></div>
-      </div>
-    </main>
+        <main class="preview">
+            <div class="card" id="calendarCard">
+                <div class="monthTitle" id="monthTitle">三月</div>
+                <div class="titleDivider" id="titleDivider"></div>
+                <div class="wdGrid" id="wdGrid"></div>
+                <div class="dateGrid" id="dateGrid"></div>
+            </div>
+        </main>
 
-    <aside class="panel">
-      <h1>企划月份生成器</h1>
+        <aside class="panel">
+            <h1>企划月份生成器</h1>
 
-      <h2>企划时间</h2>
-      <div class="inline">
-        <label>年份
-          <input id="year" type="number" value="2026"/>
-        </label>
-        <label>月份
-          <input id="month" type="number" value="3" min="1" max="12"/>
-        </label>
-      </div>
+            <h2>企划时间</h2>
+            <div class="inline">
+                <label>年份
+                    <input id="year" type="number" value="2026" />
+                </label>
+                <label>月份
+                    <input id="month" type="number" value="3" min="1" max="12" />
+                </label>
+            </div>
             <div class="tip">
-        更换年月后需要点击生成月历，才会更新日期。
-      </div>
-      <div class="row">
-        <button id="renderBtn">生成月历</button>
-      </div>
+                更换年月后需要点击生成月历，才会更新日期。
+            </div>
+            <div class="row">
+                <button id="renderBtn">生成月历</button>
+            </div>
 
-      <h2>月历卡片</h2>
-      <label>宽度 <span class="val" id="cardWVal"></span>
-        <input id="cardW" type="range" min="200" max="400" value="320">
-      </label>
-      <label>高度 <span class="val" id="cardHVal"></span>
-        <input id="cardH" type="range" min="200" max="400" value="320">
-      </label>
-      <label>背景色
-        <input id="cardBg" type="color" value="#ffffff">
-      </label>
+            <h2>月历卡片</h2>
+            <label>宽度 <span class="val" id="cardWVal"></span>
+                <input id="cardW" type="range" min="200" max="400" value="320">
+            </label>
+            <label>高度 <span class="val" id="cardHVal"></span>
+                <input id="cardH" type="range" min="200" max="400" value="320">
+            </label>
+            <label>背景色
+                <input id="cardBg" type="color" value="#ffffff">
+            </label>
 
-      <label class="check">
-        <input id="transparentBg" type="checkbox">
-        透明背景（仅导出文字与边框的透明PNG）
-      </label>
+            <label class="check">
+                <input id="transparentBg" type="checkbox">
+                透明背景（仅导出文字与边框的透明PNG）
+            </label>
 
-      <h2>月份</h2>
-      <label class="check">
-        <input id="hideTitle" type="checkbox">
-        隐藏月份
-      </label>      
-      <label>对齐方式
-        <select id="titleAlign">
-          <option value="left">左对齐</option>
-          <option value="center" selected>居中</option>
-          <option value="right">右对齐</option>
-        </select>
-      </label>
+            <h2>月份</h2>
+            <label class="check">
+                <input id="hideTitle" type="checkbox">
+                隐藏月份
+            </label>
+            <label>对齐方式
+                <select id="titleAlign">
+                    <option value="left">左对齐</option>
+                    <option value="center" selected>居中</option>
+                    <option value="right">右对齐</option>
+                </select>
+            </label>
 
-      <label>字体
-        <select id="titleFont">
-          <option value="Inter, system-ui, sans-serif">Inter</option>
-          <option value="'Noto Sans JP', system-ui, sans-serif">Noto Sans JP</option>
-          <option value="system-ui, sans-serif">System UI</option>
-          <option value="ui-rounded, system-ui, sans-serif">Rounded</option>
-          <option value="ui-monospace, SFMono-Regular, Menlo, monospace">Monospace</option>
-          <option value="serif">Serif</option>
-        </select>
-      </label>
-      <label>字体大小<span class="val" id="titleSizeVal"></span>
-        <input id="titleSize" type="range" min="15" max="25" value="15">
-      </label>
+            <label>字体
+                <select id="titleFont">
+                    <option value="Inter, system-ui, sans-serif">Inter</option>
+                    <option value="'Noto Sans JP', system-ui, sans-serif">思源黑体</option>
+                    <option value="system-ui, sans-serif">System UI</option>
+                    <option value="ui-rounded, system-ui, sans-serif">Rounded</option>
+                    <option value="ui-monospace, SFMono-Regular, Menlo, monospace">Monospace</option>
+                    <option value="'Noto Serif SC', serif">思源宋体</option>
+                    <option value="'ZCOOL XiaoWei', serif">站酷小薇体</option>
+                    <option value="'LXGW WenKai Mono TC', monospace">霞鹜文楷等宽</option>
+                    <option value="'BoutiqueBitmap'">Boutique Bitmap 像素体</option>
+                    <option value="'YDWaosagi'">夜渡鹭体</option>
+                </select>
+            </label>
+            <label>字体大小<span class="val" id="titleSizeVal"></span>
+                <input id="titleSize" type="range" min="15" max="25" value="15">
+            </label>
+            <label>月份颜色
+                <input id="titleColor" type="color" value="#444444">
+            </label>
+
+            <label>分割线颜色
+                <input id="dividerColor" type="color" value="#dddddd">
+            </label>
 
 
-      <h2>星期</h2>
-      <label>显示语言
-        <select id="wdLang">
-          <option value="zh">中文</option>
-          <option value="en">英文</option>
-        </select>
-      </label>
-      <label>字体
-        <select id="wdFont">
-          <option value="Inter, system-ui, sans-serif">Inter</option>
-          <option value="'Noto Sans JP', system-ui, sans-serif">Noto Sans JP</option>
-          <option value="system-ui, sans-serif">System UI</option>
-          <option value="ui-rounded, system-ui, sans-serif">Rounded</option>
-          <option value="ui-monospace, SFMono-Regular, Menlo, monospace">Monospace</option>
-          <option value="serif">Serif</option>
-        </select>
-      </label>
-      <label>字体大小 <span class="val" id="wdSizeVal"></span>
-        <input id="wdSize" type="range" min="15" max="27" value="15">
-      </label>
-      <label>颜色
-        <input id="wdColor" type="color" value="#333333">
-      </label>
+            <h2>星期</h2>
+            <label>显示语言
+                <select id="wdLang">
+                    <option value="zh">中文</option>
+                    <option value="en">英文</option>
+                </select>
+            </label>
+            <label>字体
+                <select id="wdFont">
+                    <option value="Inter, system-ui, sans-serif">Inter</option>
+                    <option value="'Noto Sans JP', system-ui, sans-serif">思源黑体</option>
+                    <option value="system-ui, sans-serif">System UI</option>
+                    <option value="ui-rounded, system-ui, sans-serif">Rounded</option>
+                    <option value="ui-monospace, SFMono-Regular, Menlo, monospace">Monospace</option>
+                    <option value="'Noto Serif SC', serif">思源宋体</option>
+                    <option value="'ZCOOL XiaoWei', serif">站酷小薇体</option>
+                    <option value="'LXGW WenKai Mono TC', monospace">霞鹜文楷等宽</option>
+                    <option value="'Playfair Display', serif">衬线展示体</option>
+                    <option value="'Qahiri', sans-serif">Qahiri</option>
+                    <option value="'Raleway', sans-serif">Raleway</option>
+                    <option value="'Roboto Slab', serif">Roboto 衬线体</option>
+                    <option value="'WDXL Lubrifont SC', sans-serif">WDXL Lubrifont SC</option>
+                    <option value="'BoutiqueBitmap'">Boutique Bitmap 像素体</option>
+                    <option value="'YDWaosagi'">夜渡鹭体</option>
+                </select>
+            </label>
+            <label>字体大小 <span class="val" id="wdSizeVal"></span>
+                <input id="wdSize" type="range" min="15" max="27" value="15">
+            </label>
+            <label>颜色
+                <input id="wdColor" type="color" value="#333333">
+            </label>
 
-      <h2>日期</h2>
-      <label>字体
-        <select id="dtFont">
-          <option value="Inter, system-ui, sans-serif">Inter</option>
-          <option value="'Noto Sans JP', system-ui, sans-serif">Noto Sans JP</option>
-          <option value="system-ui, sans-serif">System UI</option>
-          <option value="ui-rounded, system-ui, sans-serif">Rounded</option>
-          <option value="ui-monospace, SFMono-Regular, Menlo, monospace">Monospace</option>
-          <option value="serif">Serif</option>
-        </select>
-      </label>
-      <label>字体大小 <span class="val" id="dtSizeVal"></span>
-        <input id="dtSize" type="range" min="15" max="25" value="15">
-      </label>
-      <label>工作日颜色
-        <input id="dtColor" type="color" value="#111111">
-      </label>
-      <label>周末颜色（周六/周日）
-        <input id="dtWeekendColor" type="color" value="#d23b3b">
-      </label>
+            <h2>日期</h2>
+            <label>字体
+                <select id="dtFont">
+                    <option value="Inter, system-ui, sans-serif">Inter</option>
+                    <option value="'Noto Sans JP', system-ui, sans-serif">思源黑体</option>
+                    <option value="system-ui, sans-serif">System UI</option>
+                    <option value="ui-rounded, system-ui, sans-serif">Rounded</option>
+                    <option value="ui-monospace, SFMono-Regular, Menlo, monospace">Monospace</option>
+                    <option value="'Noto Serif SC', serif">思源宋体</option>
+                    <option value="'ZCOOL XiaoWei', serif">站酷小薇体</option>
+                    <option value="'LXGW WenKai Mono TC', monospace">霞鹜文楷等宽</option>
+                    <option value="'Playfair Display', serif">衬线展示体</option>
+                    <option value="'Qahiri', sans-serif">Qahiri</option>
+                    <option value="'Raleway', sans-serif">Raleway</option>
+                    <option value="'Roboto Slab', serif">Roboto 衬线体</option>
+                    <option value="'WDXL Lubrifont SC', sans-serif">WDXL Lubrifont SC</option>
+                    <option value="'BoutiqueBitmap'">Boutique Bitmap 像素体</option>
+                    <option value="'YDWaosagi'">夜渡鹭体</option>
 
-      <div class="row">
-        <button id="exportPngBtn">导出PNG</button>
-        <button id="resetBtn">重置</button>
-      </div>
+                </select>
+            </label>
+            <label>字体大小 <span class="val" id="dtSizeVal"></span>
+                <input id="dtSize" type="range" min="15" max="25" value="15">
+            </label>
+            <label>工作日颜色
+                <input id="dtColor" type="color" value="#111111">
+            </label>
+            <label>周末颜色（周六/周日）
+                <input id="dtWeekendColor" type="color" value="#d23b3b">
+            </label>
 
-      <div class="tip">
-        点击导出PNG即可下载月历。
-      </div>
-    </aside>
+            <div class="row">
+                <button id="exportPngBtn">导出PNG</button>
+                <button id="resetBtn">重置</button>
+            </div>
 
-  </div>
+            <div class="tip">
+                点击导出PNG即可下载月历。
+            </div>
+        </aside>
 
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="./app.js"></script>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="./app.js"></script>
 </body>
+
 </html>
