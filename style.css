@@ -483,8 +483,8 @@ button:disabled{
   position: absolute;
   top: 0;
   bottom: 0;
-  left: calc(var(--date-col-gap) / -2);
-  right: calc(var(--date-col-gap) / -2);
+  left: calc(var(--date-col-gap) * -0.5);
+  right: calc(var(--date-col-gap) * -0.5);
   background: var(--rng-bg, rgba(0,0,0,0.08));
   z-index: 0;
 }
