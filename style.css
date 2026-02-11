@@ -613,7 +613,7 @@ button:disabled {
   /* 这里必须压过全局 button padding，所以保留 important */
   .mTabs button {
     width: 38px;
-    height: 38px;
+    height: auto;
     min-width: 38px;
     min-height: 38px;
 
@@ -626,6 +626,10 @@ button:disabled {
 
     font-size: 13px;
     box-shadow: none;
+
+      white-space: normal;
+  line-height: 1.1;
+  text-align: center;
   }
 
   .mTabs button.isActive {
