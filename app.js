@@ -528,11 +528,28 @@ renderMonth(+yearEl.value, +monthEl.value);
 updateValueDisplays();
 applyRanges();
 
-document.querySelectorAll('.mTabs button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const i = +btn.dataset.page;
-    const pages = document.getElementById('mPages');
-    const page = pages?.children?.[i];
-    page?.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+(function initMobileTabs() {
+  const pages = document.getElementById('mPages');
+  const tabs = document.querySelectorAll('.mTabs button');
+  if (!pages || tabs.length === 0) return;
+
+  function setActive(i) {
+    tabs.forEach((b, idx) => b.classList.toggle('isActive', idx === i));
+  }
+
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = +btn.dataset.page;
+      const page = pages.children[i];
+      if (!page) return;
+      pages.scrollTo({
+        left: pages.clientWidth * i,
+        behavior: 'smooth'
+      });
+      setActive(i);
+    });
   });
-});
+
+  // 初始高亮第 1 页
+  setActive(0);
+})();
