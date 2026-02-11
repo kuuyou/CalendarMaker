@@ -537,6 +537,7 @@ applyRanges();
   function setActive(i) {
     tabs.forEach((b, idx) => b.classList.toggle('isActive', idx === i));
     pageEls.forEach((p, idx) => p.classList.toggle('isActive', idx === i));
+    pages.scrollTo({ top: 0, behavior: 'smooth' }); // 切页回到顶部（可留可删）
   }
 
   tabs.forEach(btn => {
@@ -549,6 +550,7 @@ applyRanges();
 
   setActive(0);
 })();
+
 
 
 (function lockHorizontalSwipe(){
