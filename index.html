@@ -40,29 +40,16 @@
         <aside class="panel">
             <h1>企划月份生成器</h1>
 
-            <h2>企划时间</h2>
-            <div class="inline">
-                <label>年份
-                    <input id="year" type="number" value="2026" />
-                </label>
-                <label>月份
-                    <input id="month" type="number" value="3" min="1" max="12" />
-                </label>
+            <!-- 手机端用：分页按钮（可选） -->
+            <div class="mTabs">
+                <button type="button" data-page="0">企划时间</button>
+                <button type="button" data-page="1">日程安排</button>
+                <button type="button" data-page="2">月历卡片</button>
+                <button type="button" data-page="3">月份</button>
+                <button type="button" data-page="4">星期</button>
+                <button type="button" data-page="5">日期</button>
+                <br>
             </div>
-            <div class="tip">
-                更换年月后需要点击生成月历，才会更新日期。
-            </div>
-            <div class="row">
-                <button id="renderBtn">生成月历</button>
-            </div>
-
-            <h2>日程安排</h2>
-            <div class="row">
-                <button id="addRangeBtn" type="button">追加</button>
-                <button id="removeRangeBtn" type="button">删除</button>
-            </div>
-
-            <div id="rangesPanel"></div>
 
             <div class="row">
                 <button id="exportPngBtn">导出PNG</button>
@@ -71,112 +58,144 @@
             <div class="tip">
                 点击导出PNG即可下载月历。
             </div>
+            <!-- 横向滑动容器 -->
+            <div class="mPages" id="mPages">
+                <section class="mPage">
+                    <h2>企划时间</h2>
+                    <div class="inline">
+                        <label>年份
+                            <input id="year" type="number" value="2026" />
+                        </label>
+                        <label>月份
+                            <input id="month" type="number" value="3" min="1" max="12" />
+                        </label>
+                    </div>
+                    <div class="tip">
+                        更换年月后需要点击生成月历，才会更新日期。
+                    </div>
+                    <div class="row">
+                        <button id="renderBtn">生成月历</button>
+                    </div>
+                </section>
+                <section class="mPage">
+                    <h2>日程安排</h2>
+                    <div class="row">
+                        <button id="addRangeBtn" type="button">追加</button>
+                        <button id="removeRangeBtn" type="button">删除</button>
+                    </div>
 
-            <br>
+                    <div id="rangesPanel"></div>
 
-            <h3 class="moreSatus">更多设置</h3>
+                    <br>
+                </section>
+                <section class="mPage">
+                    <h3 class="moreSatus">更多设置</h3>
 
-            <div class="moredivider" id="moredivider"></div>
+                    <div class="moredivider" id="moredivider"></div>
 
-            <h2>月历卡片</h2>
-            <label>宽度 <span class="val" id="cardWVal"></span>
-                <input id="cardW" type="range" min="200" max="400" value="320">
-            </label>
-            <label>高度 <span class="val" id="cardHVal"></span>
-                <input id="cardH" type="range" min="200" max="400" value="320">
-            </label>
-            <label>背景色
-                <input id="cardBg" type="color" value="#ffffff">
-            </label>
+                    <h2>月历卡片</h2>
+                    <label>宽度 <span class="val" id="cardWVal"></span>
+                        <input id="cardW" type="range" min="200" max="400" value="320">
+                    </label>
+                    <label>高度 <span class="val" id="cardHVal"></span>
+                        <input id="cardH" type="range" min="200" max="400" value="320">
+                    </label>
+                    <label>背景色
+                        <input id="cardBg" type="color" value="#ffffff">
+                    </label>
 
-            <label class="check">
-                <input id="transparentBg" type="checkbox">
-                透明背景（仅导出文字与边框的透明PNG）
-            </label>
+                    <label class="check">
+                        <input id="transparentBg" type="checkbox">
+                        透明背景（仅导出文字与边框的透明PNG）
+                    </label>
+                </section>
+                <section class="mPage">
+                    <h2>月份</h2>
+                    <label class="check">
+                        <input id="hideTitle" type="checkbox">
+                        隐藏月份
+                    </label>
+                    <label>对齐方式
+                        <select id="titleAlign">
+                            <option value="left">左对齐</option>
+                            <option value="center" selected>居中</option>
+                            <option value="right">右对齐</option>
+                        </select>
+                    </label>
 
-            <h2>月份</h2>
-            <label class="check">
-                <input id="hideTitle" type="checkbox">
-                隐藏月份
-            </label>
-            <label>对齐方式
-                <select id="titleAlign">
-                    <option value="left">左对齐</option>
-                    <option value="center" selected>居中</option>
-                    <option value="right">右对齐</option>
-                </select>
-            </label>
-
-            <label>字体
-                <select id="titleFont">
-                    <option value="Inter, system-ui, sans-serif">Inter</option>
-                    <option value="'Noto Sans JP', system-ui, sans-serif">思源黑体</option>
-                    <option value="ui-monospace, SFMono-Regular, Menlo, monospace">Monospace</option>
-                    <option value="'Noto Serif SC', serif">思源宋体</option>
-                    <option value="'BoutiqueBitmap'">Boutique Bitmap 像素体</option>
-                    <option value="'YDWaosagi'">夜渡鹭体</option>
-                </select>
-            </label>
-            <label>字体大小<span class="val" id="titleSizeVal"></span>
-                <input id="titleSize" type="range" min="15" max="25" value="15">
-            </label>
-            <label>月份颜色
-                <input id="titleColor" type="color" value="#444444">
-            </label>
-            <label>分割线颜色
-                <input id="dividerColor" type="color" value="#dddddd">
-            </label>
-
-            <h2>星期</h2>
-            <label>显示语言
-                <select id="wdLang">
-                    <option value="zh">中文</option>
-                    <option value="en">英文</option>
-                </select>
-            </label>
-            <label>字体
-                <select id="wdFont">
-                    <option value="Inter, system-ui, sans-serif">Inter</option>
-                    <option value="'Noto Sans JP', system-ui, sans-serif">思源黑体</option>
-                    <option value="ui-monospace, SFMono-Regular, Menlo, monospace">Monospace</option>
-                    <option value="'Noto Serif SC', serif">思源宋体</option>
-                    <option value="'Raleway', sans-serif">Raleway</option>
-                    <option value="'Roboto Slab', serif">Roboto 衬线体</option>
-                    <option value="'BoutiqueBitmap'">Boutique Bitmap 像素体</option>
-                    <option value="'YDWaosagi'">夜渡鹭体</option>
-                </select>
-            </label>
-            <label>字体大小 <span class="val" id="wdSizeVal"></span>
-                <input id="wdSize" type="range" min="15" max="27" value="15">
-            </label>
-            <label>颜色
-                <input id="wdColor" type="color" value="#333333">
-            </label>
-
-            <h2>日期</h2>
-            <label>字体
-                <select id="dtFont">
-                    <option value="Inter, system-ui, sans-serif">Inter</option>
-                    <option value="'Noto Sans JP', system-ui, sans-serif">思源黑体</option>
-                    <option value="ui-rounded, system-ui, sans-serif">Rounded</option>
-                    <option value="ui-monospace, SFMono-Regular, Menlo, monospace">Monospace</option>
-                    <option value="'Noto Serif SC', serif">思源宋体</option>
-                    <option value="'LXGW WenKai Mono TC', monospace">霞鹜文楷等宽</option>
-                    <option value="'Playfair Display', serif">衬线展示体</option>
-                    <option value="'Raleway', sans-serif">Raleway</option>
-                    <option value="'BoutiqueBitmap'">Boutique Bitmap 像素体</option>
-                    <option value="'YDWaosagi'">夜渡鹭体</option>
-                </select>
-            </label>
-            <label>字体大小 <span class="val" id="dtSizeVal"></span>
-                <input id="dtSize" type="range" min="15" max="25" value="15">
-            </label>
-            <label>工作日颜色
-                <input id="dtColor" type="color" value="#111111">
-            </label>
-            <label>周末颜色（周六/周日）
-                <input id="dtWeekendColor" type="color" value="#d23b3b">
-            </label>
+                    <label>字体
+                        <select id="titleFont">
+                            <option value="Inter, system-ui, sans-serif">Inter</option>
+                            <option value="'Noto Sans JP', system-ui, sans-serif">思源黑体</option>
+                            <option value="ui-monospace, SFMono-Regular, Menlo, monospace">Monospace</option>
+                            <option value="'Noto Serif SC', serif">思源宋体</option>
+                            <option value="'BoutiqueBitmap'">Boutique Bitmap 像素体</option>
+                            <option value="'YDWaosagi'">夜渡鹭体</option>
+                        </select>
+                    </label>
+                    <label>字体大小<span class="val" id="titleSizeVal"></span>
+                        <input id="titleSize" type="range" min="15" max="25" value="15">
+                    </label>
+                    <label>月份颜色
+                        <input id="titleColor" type="color" value="#444444">
+                    </label>
+                    <label>分割线颜色
+                        <input id="dividerColor" type="color" value="#dddddd">
+                    </label>
+                </section>
+                <section class="mPage">
+                    <h2>星期</h2>
+                    <label>显示语言
+                        <select id="wdLang">
+                            <option value="zh">中文</option>
+                            <option value="en">英文</option>
+                        </select>
+                    </label>
+                    <label>字体
+                        <select id="wdFont">
+                            <option value="Inter, system-ui, sans-serif">Inter</option>
+                            <option value="'Noto Sans JP', system-ui, sans-serif">思源黑体</option>
+                            <option value="ui-monospace, SFMono-Regular, Menlo, monospace">Monospace</option>
+                            <option value="'Noto Serif SC', serif">思源宋体</option>
+                            <option value="'Raleway', sans-serif">Raleway</option>
+                            <option value="'Roboto Slab', serif">Roboto 衬线体</option>
+                            <option value="'BoutiqueBitmap'">Boutique Bitmap 像素体</option>
+                            <option value="'YDWaosagi'">夜渡鹭体</option>
+                        </select>
+                    </label>
+                    <label>字体大小 <span class="val" id="wdSizeVal"></span>
+                        <input id="wdSize" type="range" min="15" max="27" value="15">
+                    </label>
+                    <label>颜色
+                        <input id="wdColor" type="color" value="#333333">
+                    </label>
+                </section>
+                <section class="mPage">
+                    <h2>日期</h2>
+                    <label>字体
+                        <select id="dtFont">
+                            <option value="Inter, system-ui, sans-serif">Inter</option>
+                            <option value="'Noto Sans JP', system-ui, sans-serif">思源黑体</option>
+                            <option value="ui-rounded, system-ui, sans-serif">Rounded</option>
+                            <option value="ui-monospace, SFMono-Regular, Menlo, monospace">Monospace</option>
+                            <option value="'Noto Serif SC', serif">思源宋体</option>
+                            <option value="'LXGW WenKai Mono TC', monospace">霞鹜文楷等宽</option>
+                            <option value="'Playfair Display', serif">衬线展示体</option>
+                            <option value="'Raleway', sans-serif">Raleway</option>
+                            <option value="'BoutiqueBitmap'">Boutique Bitmap 像素体</option>
+                            <option value="'YDWaosagi'">夜渡鹭体</option>
+                        </select>
+                    </label>
+                    <label>字体大小 <span class="val" id="dtSizeVal"></span>
+                        <input id="dtSize" type="range" min="15" max="25" value="15">
+                    </label>
+                    <label>工作日颜色
+                        <input id="dtColor" type="color" value="#111111">
+                    </label>
+                    <label>周末颜色（周六/周日）
+                        <input id="dtWeekendColor" type="color" value="#d23b3b">
+                    </label>
+                </section>
         </aside>
 
     </div>

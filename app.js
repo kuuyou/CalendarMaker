@@ -527,3 +527,12 @@ if (rangesPanel && getRangeCount() === 0) {
 renderMonth(+yearEl.value, +monthEl.value);
 updateValueDisplays();
 applyRanges();
+
+document.querySelectorAll('.mTabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const i = +btn.dataset.page;
+    const pages = document.getElementById('mPages');
+    const page = pages?.children?.[i];
+    page?.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+  });
+});

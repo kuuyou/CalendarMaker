@@ -514,34 +514,87 @@ button:disabled{
   margin: 6px 0 10px 0;
 }
 
-/* ===== Mobile ===== */
-/* ===== Mobile layout fix: stack preview + panel ===== */
+.mTabs{
+  display: none;
+}
+
+/* ===== Mobile: preview sticky + panel horizontal pages ===== */
 @media (max-width: 820px){
-  html, body{
-    height: auto;
-    overflow: auto;
-  }
 
   .layout{
-    position: static;      /* 覆盖 fixed */
-    inset: auto;           /* 覆盖 inset:0 */
-    display: flex;         /* 覆盖 grid */
-    flex-direction: column;
-    min-height: 100vh;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  .mTabs{
+    display: flex;   /* 手机才显示 */
   }
 
+  /* 预览固定在上面 */
   .preview{
-    height: auto;          /* 覆盖 100% */
-    overflow: visible;     /* 覆盖 auto */
-    padding: 16px;
-    place-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 12px !important;
   }
 
+  /* 给预览一点“遮罩”，避免下面滑动时穿帮 */
+  .preview::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:-1px;
+    height: 16px;
+    pointer-events:none;
+    background: linear-gradient(180deg, rgba(255,255,255,0), rgba(245,255,231,1));
+  }
+
+  /* 面板下面占屏幕高度的一半左右 */
   .panel{
-    width: 100%;
-    height: auto;          /* 覆盖 100% */
-    overflow: visible;     /* 让它跟随页面滚动 */
-    border-left: 0;
+    height: 52vh !important;
+    overflow: hidden !important; /* 关键：不让它竖向滚动 */
     border-top: 1px solid var(--ui-border);
+  }
+
+  /* 可选：顶部小tab */
+  .mTabs{
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 8px 2px 10px;
+    margin-bottom: 6px;
+  }
+  .mTabs button{
+    flex: 0 0 auto;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.72);
+    color: rgba(22,22,34,0.80);
+  }
+
+  /* 横向分页容器：滑动 + 吸附 */
+  .mPages{
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 12px;
+  }
+
+  .mPage{
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    padding: 0 2px 14px;
+    overflow-y: auto;          /* 每一页自己竖向滚 */
+    max-height: calc(52vh - 56px); /* 预留tabs高度 */
+  }
+
+  /* 让每页内部控件宽度正常 */
+  .mPage label,
+  .mPage .inline,
+  .mPage .row,
+  .mPage .tip{
+    width: 100%;
   }
 }
