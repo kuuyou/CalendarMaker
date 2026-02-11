@@ -514,3 +514,57 @@ button:disabled{
   margin: 6px 0 10px 0;
 }
 
+/* ===== Mobile ===== */
+@media (max-width: 820px){
+  body{ overflow: auto; }
+
+  .layout{
+    position: static;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* 预览放上面 */
+  .preview{
+    order: 0;
+    height: auto;
+    padding: 16px;
+    place-items: center;
+  }
+
+  /* 面板放下面，占满宽 */
+  .panel{
+    order: 1;
+    width: 100%;
+    height: auto;
+    border-left: 0;
+    border-top: 1px solid var(--ui-border);
+    overflow: visible;
+  }
+}
+@media (max-width: 820px){
+  label{ font-size: 13px; }
+  button{ padding: 12px 16px; }
+  input[type="number"], select{
+    padding: 10px 12px;
+    font-size: 16px; /* 防止 iOS 自动放大 */
+  }
+  input[type="range"]{ height: 12px; }
+  input[type="range"]::-webkit-slider-thumb{
+    width: 24px;
+    height: 24px;
+  }
+}
+@media (max-width: 820px){
+  .card{
+    transform-origin: top center;
+    transform: scale(0.9);
+  }
+}
+
+@media (max-width: 420px){
+  .card{
+    transform: scale(0.78);
+  }
+}

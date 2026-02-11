@@ -12,7 +12,7 @@ const getPx = (k) => {
   return Number.isFinite(v) ? v : 0;
 };
 
-function computeScale(){
+function computeScale() {
   const w = getPx('--card-w');
   const h = getPx('--card-h');
   const base = 320;
@@ -21,12 +21,12 @@ function computeScale(){
   updateValueDisplays();
 }
 
-function actualPx(baseNum){
+function actualPx(baseNum) {
   const s = parseFloat(getVar('--scale')) || 1;
   return Math.round((+baseNum || 0) * s);
 }
 
-function updateValueDisplays(){
+function updateValueDisplays() {
   const cardWEl = document.getElementById('cardW');
   const cardHEl = document.getElementById('cardH');
 
@@ -42,7 +42,7 @@ function updateValueDisplays(){
   if (dtSizeEl) document.getElementById('dtSizeVal').textContent = `${actualPx(dtSizeEl.value)}px`;
 }
 
-function bindRangePx(id, cssVar, min, max){
+function bindRangePx(id, cssVar, min, max) {
   const el = document.getElementById(id);
   if (!el) return;
 
@@ -60,7 +60,7 @@ function bindRangePx(id, cssVar, min, max){
   apply();
 }
 
-function bindRangeNum(id, cssVar){
+function bindRangeNum(id, cssVar) {
   const el = document.getElementById(id);
   if (!el) return;
 
@@ -74,7 +74,7 @@ function bindRangeNum(id, cssVar){
   apply();
 }
 
-function bindColor(id, cssVar){
+function bindColor(id, cssVar) {
   const el = document.getElementById(id);
   if (!el) return;
 
@@ -83,7 +83,7 @@ function bindColor(id, cssVar){
   apply();
 }
 
-function bindSelect(id, cssVar){
+function bindSelect(id, cssVar) {
   const el = document.getElementById(id);
   if (!el) return;
 
@@ -100,7 +100,7 @@ bindRangePx('cardW', '--card-w', 200, 400);
 bindRangePx('cardH', '--card-h', 200, 400);
 
 const bgInput = document.getElementById('cardBg');
-if (bgInput){
+if (bgInput) {
   bgInput.addEventListener('input', () => {
     if (!document.getElementById('transparentBg')?.checked) {
       setVar('--card-bg', bgInput.value);
@@ -112,11 +112,11 @@ if (bgInput){
 const cardEl = document.getElementById('calendarCard');
 const transparentEl = document.getElementById('transparentBg');
 
-function applyTransparency(){
+function applyTransparency() {
   const isT = !!transparentEl?.checked;
   cardEl?.classList.toggle('isTransparent', isT);
 
-  if (bgInput){
+  if (bgInput) {
     bgInput.disabled = isT;
     setVar('--card-bg', isT ? 'transparent' : bgInput.value);
   }
@@ -138,7 +138,7 @@ bindSelect('titleAlign', '--title-align');
 bindColor('titleColor', '--title-color');
 bindColor('dividerColor', '--divider-color');
 
-function applyTitleHidden(){
+function applyTitleHidden() {
   const hide = !!hideTitleEl?.checked;
 
   titleEl?.classList.toggle('isHidden', hide);
@@ -171,9 +171,9 @@ const wdLangEl = document.getElementById('wdLang');
 const wdGrid = document.getElementById('wdGrid');
 const dateGrid = document.getElementById('dateGrid');
 
-const WEEKDAYS_EN = ['S','M','T','W','T','F','S'];
-const WEEKDAYS_ZH = ['日','一','二','三','四','五','六'];
-const MONTH_CN = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+const WEEKDAYS_EN = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+const WEEKDAYS_ZH = ['日', '一', '二', '三', '四', '五', '六'];
+const MONTH_CN = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
 
 const yearEl = document.getElementById('year');
 const monthEl = document.getElementById('month');
@@ -186,7 +186,7 @@ const removeRangeBtn = document.getElementById('removeRangeBtn');
 
 const RANGE_PALETTE = ['#deee85', '#b8e076', '#ffa743', '#97a0ff', '#ff7aa2'];
 
-function buildRangeItem(index, init){
+function buildRangeItem(index, init) {
 
   const enabled = init?.enabled ?? true;
   const start = init?.start ?? 1;
@@ -256,21 +256,21 @@ function buildRangeItem(index, init){
 
 
 
-function getRangeCount(){
+function getRangeCount() {
   return rangesPanel ? rangesPanel.querySelectorAll('.rngItem').length : 0;
 }
 
-function reindexRanges(){
+function reindexRanges() {
   if (!rangesPanel) return;
   const items = [...rangesPanel.querySelectorAll('.rngItem')];
   items.forEach((item, idx) => {
     item.dataset.i = String(idx);
     const colorLabel = item.querySelector('label:last-child');
-   
+
   });
 }
 
-function suggestNextRange(){
+function suggestNextRange() {
   const y = +yearEl.value;
   const m = +monthEl.value;
   const dim = new Date(y, m, 0).getDate();
@@ -285,10 +285,10 @@ function suggestNextRange(){
   return { start, end };
 }
 
-function addRange(){
+function addRange() {
   if (!rangesPanel) return;
   const n = getRangeCount();
-  if (n >= MAX_RANGES){
+  if (n >= MAX_RANGES) {
     alert('最多只能添加5个日程安排！');
     return;
   }
@@ -304,10 +304,10 @@ function addRange(){
   applyRanges();
 }
 
-function removeRange(){
+function removeRange() {
   if (!rangesPanel) return;
   const items = rangesPanel.querySelectorAll('.rngItem');
-  if (items.length <= 1) return; 
+  if (items.length <= 1) return;
   items[items.length - 1].remove();
   reindexRanges();
   applyRanges();
@@ -320,14 +320,14 @@ rangesPanel?.addEventListener('input', () => applyRanges());
 rangesPanel?.addEventListener('change', () => applyRanges());
 
 /* ===== Range highlight logic (pill) ===== */
-function clearCellRanges(){
+function clearCellRanges() {
   dateGrid?.querySelectorAll('.cell[data-day]').forEach(c => {
     c.classList.remove('rng', 'start', 'end', 'single');
     c.style.removeProperty('--rng-bg');
   });
 }
 
-function readRangesFromDOM(){
+function readRangesFromDOM() {
   if (!rangesPanel) return [];
   const items = [...rangesPanel.querySelectorAll('.rngItem')];
 
@@ -340,7 +340,7 @@ function readRangesFromDOM(){
   });
 }
 
-function applyRanges(){
+function applyRanges() {
   if (!dateGrid) return;
 
   clearCellRanges();
@@ -352,7 +352,7 @@ function applyRanges(){
   const ranges = readRangesFromDOM();
 
   // 后面的组覆盖前面的组：按顺序画，后画的覆盖
-  for (const r of ranges){
+  for (const r of ranges) {
     if (!r.enabled) continue;
 
     let a = clamp(r.start, 1, daysInMonth);
@@ -360,7 +360,7 @@ function applyRanges(){
     if (a > b) [a, b] = [b, a];
 
     const byRow = new Map(); // row -> [{cell, col}]
-    for (let d = a; d <= b; d++){
+    for (let d = a; d <= b; d++) {
       const cell = dateGrid.querySelector(`.cell[data-day="${d}"]`);
       if (!cell) continue;
 
@@ -371,11 +371,11 @@ function applyRanges(){
       byRow.get(row).push({ cell, col });
     }
 
-    for (const [, arr] of byRow){
+    for (const [, arr] of byRow) {
       arr.sort((x, y) => x.col - y.col);
 
       let segStart = 0;
-      for (let i = 0; i <= arr.length; i++){
+      for (let i = 0; i <= arr.length; i++) {
         const isBreak =
           i === arr.length ||
           (i > 0 && arr[i].col !== arr[i - 1].col + 1);
@@ -384,11 +384,11 @@ function applyRanges(){
 
         const seg = arr.slice(segStart, i);
 
-        if (seg.length === 1){
+        if (seg.length === 1) {
           const c = seg[0].cell;
           c.classList.add('rng', 'single');
           c.style.setProperty('--rng-bg', r.color);
-        } else if (seg.length > 1){
+        } else if (seg.length > 1) {
           seg.forEach(x => {
             x.cell.classList.add('rng');
             x.cell.style.setProperty('--rng-bg', r.color);
@@ -403,18 +403,18 @@ function applyRanges(){
   }
 }
 
-function renderMonth(year, month){
+function renderMonth(year, month) {
   wdGrid.innerHTML = '';
   dateGrid.innerHTML = '';
 
-  if (titleEl){
+  if (titleEl) {
     titleEl.textContent = MONTH_CN[month - 1] ?? `${month}月`;
   }
 
   const lang = wdLangEl?.value ?? 'en';
   const labels = (lang === 'zh') ? WEEKDAYS_ZH : WEEKDAYS_EN;
 
-  for (const w of labels){
+  for (const w of labels) {
     const d = document.createElement('div');
     d.className = 'wd';
     d.textContent = w;
@@ -424,13 +424,13 @@ function renderMonth(year, month){
   const firstDow = new Date(year, month - 1, 1).getDay(); // 0=Sun
   const daysInMonth = new Date(year, month, 0).getDate();
 
-  for (let i = 0; i < firstDow; i++){
+  for (let i = 0; i < firstDow; i++) {
     const c = document.createElement('div');
     c.className = 'cell blank';
     dateGrid.appendChild(c);
   }
 
-  for (let d = 1; d <= daysInMonth; d++){
+  for (let d = 1; d <= daysInMonth; d++) {
     const idx = firstDow + (d - 1);
     const col = idx % 7;
     const row = Math.floor(idx / 7);
@@ -471,7 +471,7 @@ document.getElementById('resetBtn')?.addEventListener('click', () => location.re
 /* ===== Export PNG ===== */
 const nextFrame = () => new Promise(requestAnimationFrame);
 
-async function waitFonts(){
+async function waitFonts() {
   if (document.fonts && document.fonts.ready) await document.fonts.ready;
   await nextFrame();
 }
@@ -484,13 +484,15 @@ document.getElementById('exportPngBtn')?.addEventListener('click', async (e) => 
   const old = btn.textContent;
   btn.textContent = '导出中…';
 
-  try{
+  try {
     document.querySelector('.preview')?.scrollTo({ top: 0, left: 0 });
     await waitFonts();
 
+    const isMobile = window.matchMedia('(max-width: 820px)').matches;
+
     const canvas = await html2canvas(cardEl, {
       backgroundColor: null,
-      scale: 2,
+      scale: isMobile ? 1.5 : 2,
       useCORS: true
     });
 
@@ -509,7 +511,7 @@ document.getElementById('exportPngBtn')?.addEventListener('click', async (e) => 
 computeScale();
 
 // 默认 1 组
-if (rangesPanel && getRangeCount() === 0){
+if (rangesPanel && getRangeCount() === 0) {
   const y = +yearEl.value;
   const m = +monthEl.value;
   const dim = new Date(y, m, 0).getDate();
