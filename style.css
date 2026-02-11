@@ -10,30 +10,26 @@
   font-display: swap;
 }
 
-
 :root{
+  /* ===== Calendar card ===== */
   --card-w: 320px;
   --card-h: 320px;
   --card-bg: #ffffff;
   --card-pad: 20px;
   --card-radius: 14px;
 
-  /* 间距：星期与日期区 */
   --wd-gap: 8px;
-
   --date-row-gap: 8px;
   --date-col-gap: 8px;
 
   --cell-pad-y: 6px;
   --cell-pad-x: 0px;
-
   --cell-radius: 10px;
 
   --title-font: Inter, system-ui, sans-serif;
   --wd-font: Inter, system-ui, sans-serif;
   --dt-font: Inter, system-ui, sans-serif;
 
-  /* 基准字号（会乘 scale） */
   --title-size: 12;
   --wd-size: 12;
   --dt-size: 12;
@@ -51,6 +47,22 @@
   --title-line: 1.1;
   --wd-line: 1.15;
   --dt-line: 1.1;
+
+  /* ===== UI override theme ===== */
+  --ui-bg: #ccdbb9;
+  --ui-panel-bg: rgba(207, 226, 162, 0.85);
+  --ui-border: rgba(2, 2, 2, 0.1);
+  --ui-shadow: 0 10px 30px rgba(30, 30, 70, 0.08);
+  --ui-shadow-soft: 0 8px 18px rgba(30, 30, 70, 0.06);
+  --ui-radius: 18px;
+  --ui-radius-sm: 12px;
+
+  --ui-accent: #519930;
+  --ui-accent-2: #deee85;
+  --ui-text: #2f312e;
+  --ui-muted: rgba(55, 66, 24, 0.795);
+
+  --ui-input-bg: rgba(255,255,255,0.92);
 }
 
 *{ box-sizing: border-box; }
@@ -59,8 +71,12 @@ html,body{ height: 100%; }
 body{
   margin: 0;
   font-family: Inter, system-ui, sans-serif;
-  color: #111;
+  color: var(--ui-text);
   overflow: hidden;
+  background:
+    radial-gradient(1000px 600px at 12% 8%, rgba(107,124,255,.12), transparent 60%),
+    radial-gradient(900px 540px at 85% 20%, rgba(255,122,162,.10), transparent 55%),
+    linear-gradient(180deg, #fafaff 0%, #f7f7ff 100%);
 }
 
 .layout{
@@ -70,76 +86,274 @@ body{
   grid-template-columns: minmax(0, 1fr) 360px;
 }
 
-.panel{
-  padding: 16px;
-  border-left: 1px solid #e6e6e6;
-  background: #fff;
-  height: 100%;
-  overflow: auto;
-}
-
-.panel h1{ font-size: 18px; margin: 0 0 12px; }
-.panel h2{ font-size: 14px; margin: 16px 0 8px; }
-
-label{
-  display: block;
-  margin: 8px 0;
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.inline{ display: flex; gap: 10px; }
-.inline label{ flex: 1; }
-
-input[type="range"]{ width: 100%; }
-input[type="number"],
-select{
-  width: 100%;
-  padding: 6px 8px;
-}
-
-.check{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-  user-select: none;
-}
-
-.row{
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-}
-
-button{ padding: 8px 10px; cursor: pointer; }
-button:disabled{ opacity: 0.5; cursor: not-allowed; }
-
-.tip{
-  color: #666;
-  font-size: 12px;
-  line-height: 1.5;
-  margin-top: 10px;
-}
-
-.val{
-  float: right;
-  color: #666;
-  font-variant-numeric: tabular-nums;
-}
-
+/* ===== Preview area ===== */
 .preview{
   min-width: 0;
   height: 100%;
   overflow: auto;
   display: grid;
   place-items: center;
-  background: #fafafa;
   padding: 24px;
+
+  background:
+    radial-gradient(circle at 10% 20%, rgba(187, 224, 118, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(208, 240, 167, 0.07) 0%, transparent 40%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(74,52,44,0.02),
+      rgba(74,52,44,0.02) 2px,
+      transparent 2px,
+      transparent 8px
+    ),
+    linear-gradient(180deg, #f5ffe7 0%, #f1efc9 100%);
 }
 
-/* ===== Card ===== */
+/* ===== Right panel (override theme) ===== */
+.panel{
+  height: 100%;
+  overflow: auto;
+
+  border-left: 1px solid var(--ui-border);
+  background: var(--ui-panel-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+
+  padding: 18px 16px 24px;
+}
+
+.panel h1{
+  font-size: 18px;
+  margin: 4px 0 14px;
+  letter-spacing: .2px;
+}
+.panel h1::after{
+  content: "";
+  display: block;
+  height: 2px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--ui-accent), transparent);
+}
+
+.panel h2{
+  font-size: 13px;
+  margin: 18px 0 10px;
+  color: var(--ui-muted);
+  letter-spacing: .2px;
+}
+
+label{
+  display: block;
+  margin: 10px 0;
+  font-size: 12px;
+  line-height: 1.4;
+
+  padding: 10px 10px;
+  border-radius: var(--ui-radius-sm);
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(20,20,60,0.08);
+  box-shadow: var(--ui-shadow-soft);
+}
+
+.inline{
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: var(--ui-radius-sm);
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(20,20,60,0.08);
+  box-shadow: var(--ui-shadow-soft);
+}
+.inline label{
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+input[type="range"]{ width: 100%; }
+
+input[type="number"],
+select{
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 15, 134, 0.12);
+  background: var(--ui-input-bg);
+  padding: 8px 10px;
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease, transform .08s ease;
+}
+
+input[type="number"]:focus,
+select:focus{
+  border-color: rgba(140, 146, 190, 0.55);
+  box-shadow: 0 0 0 4px rgba(151, 156, 190, 0.18);
+}
+
+.check{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(20,20,60,0.08);
+  background: rgba(255,255,255,0.72);
+  box-shadow: var(--ui-shadow-soft);
+  margin: 10px 0;
+}
+.check input[type="checkbox"]{
+  width: 16px;
+  height: 16px;
+  accent-color: var(--ui-accent);
+}
+
+.check span{
+  white-space: nowrap;
+}
+
+.tip{
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: var(--ui-radius-sm);
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(20,20,60,0.08);
+  box-shadow: var(--ui-shadow-soft);
+
+  color: var(--ui-muted);
+  line-height: 1.5;
+  position: relative;
+  font-size: 12px;
+}
+.tip::before{
+  content: "i";
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  border-radius: 999px;
+  background: rgba(94, 151, 105, 0.267);
+  color: var(--ui-accent);
+  font-weight: 800;
+  font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+
+.row{
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+
+  padding: 10px;
+  border-radius: var(--ui-radius-sm);
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(20,20,60,0.08);
+  box-shadow: var(--ui-shadow-soft);
+}
+
+.val{
+  float: right;
+  color: rgba(20, 20, 41, 0.55);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"]{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 167, 67, 0.705), rgba(184, 255, 53, 0.603));
+  outline: none;
+  margin-top: 8px;
+}
+
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #fff;
+  border: 2px solid rgba(107,124,255,0.7);
+  box-shadow: 0 8px 16px rgba(30,30,70,0.15);
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb{
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #fff;
+  border: 2px solid rgba(107,124,255,0.7);
+  box-shadow: 0 8px 16px rgba(30,30,70,0.15);
+  cursor: pointer;
+}
+
+input[type="color"]{
+  width: 44px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid rgba(20,20,60,0.12);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.9);
+  cursor: pointer;
+}
+
+button{
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 500;
+  letter-spacing: .2px;
+  background: #76a749;
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform .08s ease, filter .15s ease, box-shadow .15s ease;
+}
+button:hover{
+  filter: brightness(1.03);
+  box-shadow: 0 12px 22px rgba(203, 216, 187, 0.26);
+}
+button:active{
+  transform: translateY(1px) scale(0.99);
+}
+button:disabled{
+  opacity: 0.55;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+#resetBtn{
+  background: rgba(22,22,34,0.08);
+  color: rgba(22,22,34,0.80);
+  box-shadow: none;
+}
+#resetBtn:hover{
+  background: rgba(22,22,34,0.12);
+}
+
+#exportPngBtn{
+  background: #76a749;
+}
+
+/* Scrollbar (Chrome/Edge) */
+.panel::-webkit-scrollbar{ width: 10px; }
+.panel::-webkit-scrollbar-thumb{
+  background: rgba(43, 87, 18, 0.404);
+  border-radius: 999px;
+  border: 1px solid rgba(116, 124, 101, 0.425);
+}
+.panel::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+/* ===== Calendar card ===== */
 .card{
   width: var(--card-w);
   height: var(--card-h);
@@ -158,7 +372,7 @@ button:disabled{ opacity: 0.5; cursor: not-allowed; }
 
 .card.isTransparent{ background: transparent; }
 
-/* ===== Title ===== */
+/* Title */
 .monthTitle{
   font-family: var(--title-font);
   font-size: calc(var(--title-size) * 1px * var(--scale));
@@ -166,7 +380,6 @@ button:disabled{ opacity: 0.5; cursor: not-allowed; }
   line-height: var(--title-line);
   font-weight: 800;
   user-select: none;
-
   text-align: var(--title-align);
 
   white-space: nowrap;
@@ -179,7 +392,14 @@ button:disabled{ opacity: 0.5; cursor: not-allowed; }
 
 .isHidden{ display: none ; }
 
-/* ===== Weekday ===== */
+.titleDivider{
+  height: 1px;
+  background: var(--divider-color);
+  width: 100%;
+  margin: 6px 0 10px 0;
+}
+
+/* Weekdays */
 .wdGrid{
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -204,17 +424,15 @@ button:disabled{ opacity: 0.5; cursor: not-allowed; }
   white-space: nowrap;
 }
 
-/* ===== Dates ===== */
+/* Dates */
 .dateGrid{
- display: grid;
+  display: grid;
   grid-template-columns: repeat(7, 1fr);
-
   row-gap: var(--date-row-gap);
   column-gap: var(--date-col-gap);
 
-  align-content: space-around;/* 内容贴上 */
-  flex: 1 1 auto;         /* 撑满剩余空间 */
-
+  align-content: space-around;
+  flex: 1 1 auto;
   min-height: 0;
 }
 
@@ -228,6 +446,10 @@ button:disabled{ opacity: 0.5; cursor: not-allowed; }
   overflow: hidden;
   min-width: 0;
   min-height: 0;
+}
+
+.cell.rng{
+  overflow: visible;
 }
 
 .cell.blank{ opacity: 0; }
@@ -244,276 +466,50 @@ button:disabled{ opacity: 0.5; cursor: not-allowed; }
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  position: relative;
+  z-index: 1; /* keep above range pill */
 }
 
 .cell.weekend .dt{ color: var(--dt-weekend-color); }
 
-.titleDivider{
-  height: 1px;
-  background: var(--divider-color);
-  width: 100%;
-  margin: 6px 0 10px 0;
-}
-
-/* ============ Panel UI (override) ============ */
-:root{
-  --ui-bg: #ccdbb9;
-  --ui-panel-bg: rgba(207, 226, 162, 0.85);
-  --ui-border: rgba(2, 2, 2, 0.1);
-  --ui-shadow: 0 10px 30px rgba(30, 30, 70, 0.08);
-  --ui-shadow-soft: 0 8px 18px rgba(30, 30, 70, 0.06);
-  --ui-radius: 18px;
-  --ui-radius-sm: 12px;
-
-  --ui-accent: #519930;      
-  --ui-accent-2: #deee85;    
-  --ui-text: #2f312e;
-  --ui-muted: rgba(55, 66, 24, 0.795);
-
-  --ui-input-bg: rgba(255,255,255,0.92);
-}
-
-body{
-  color: var(--ui-text);
-  background: radial-gradient(1000px 600px at 12% 8%, rgba(107,124,255,.12), transparent 60%),
-              radial-gradient(900px 540px at 85% 20%, rgba(255,122,162,.10), transparent 55%),
-              linear-gradient(180deg, #fafaff 0%, #f7f7ff 100%);
-}
-
-/* 左侧预览区也更柔一点 */
-.preview{
-    background:
-    radial-gradient(circle at 10% 20%, rgba(187, 224, 118, 0.2) 0%, transparent 40%),
-    radial-gradient(circle at 85% 15%, rgba(208, 240, 167, 0.07) 0%, transparent 40%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(74,52,44,0.02),
-      rgba(74,52,44,0.02) 2px,
-      transparent 2px,
-      transparent 8px
-    ),
-    linear-gradient(180deg, #f5ffe7 0%, #f1efc9 100%);
-  
-}
-
-/* 右侧面板整体 */
-.panel{
-  border-left: 1px solid var(--ui-border);
-  background: var(--ui-panel-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
-  padding: 18px 16px 24px;
-}
-
-/* 标题 */
-.panel h1{
-  font-size: 18px;
-  margin: 4px 0 14px;
-  letter-spacing: .2px;
-}
-.panel h1::after{
-  content: "";
-  display: block;
-  height: 2px;
-  margin-top: 10px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--ui-accent), transparent);
-}
-
-/* 每个分区标题 */
-.panel h2{
-  font-size: 13px;
-  margin: 18px 0 10px;
-  color: var(--ui-muted);
-  letter-spacing: .2px;
-}
-
-/* 分区做成卡片块：用“h2 + 后面的控件们”这种结构无法直接包裹，
-   所以我们用 label / .inline / .row / .tip 做统一卡片效果 */
-.panel .inline,
-.panel .row,
-.panel .tip,
-.panel label{
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(20,20,60,0.08);
-  border-radius: var(--ui-radius-sm);
-  box-shadow: var(--ui-shadow-soft);
-}
-
-/* label 变成“控件卡片” */
-.panel label{
-  padding: 10px 10px;
-  margin: 10px 0;
-}
-
-/* inline（年份月份） */
-.inline{
-  padding: 10px;
-  gap: 10px;
-}
-.inline label{
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  padding: 0;
-  margin: 0;
-}
-
-/* tip 更像提示气泡 */
-.tip{
-  padding: 10px 12px;
-  color: var(--ui-muted);
-  line-height: 1.5;
+/* ===== Range highlight (pill) ===== */
+.cell.rng{
   position: relative;
 }
-.tip::before{
-  content: "i";
-  display: inline-grid;
-  place-items: center;
-  width: 18px;
-  height: 18px;
-  margin-right: 8px;
+
+.cell.rng::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--date-col-gap) / -2);
+  right: calc(var(--date-col-gap) / -2);
+  background: var(--rng-bg, rgba(0,0,0,0.08));
+  z-index: 0;
+}
+
+.cell.rng.start::before{
+  left: 0;
+  border-radius: 999px 0 0 999px;
+}
+.cell.rng.end::before{
+  right: 0;
+  border-radius: 0 999px 999px 0;
+}
+.cell.rng.single::before{
+  left: 0;
+  right: 0;
   border-radius: 999px;
-  background: rgba(94, 151, 105, 0.267);
-  color: var(--ui-accent);
-  font-weight: 800;
-  font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
 }
 
-/* 数值小标签更可爱 */
-.val{
-  float: right;
-  color: rgba(20, 20, 41, 0.55);
-  font-weight: 700;
+.panel h3.moreSatus{
+  color: #33382e;
 }
 
-/* 输入框、下拉统一 */
-input[type="number"],
-select{
-  border-radius: 12px;
-  border: 1px solid rgba(15, 15, 134, 0.12);
-  background: var(--ui-input-bg);
-  padding: 8px 10px;
-  outline: none;
-  transition: box-shadow .15s ease, border-color .15s ease, transform .08s ease;
-}
-
-input[type="number"]:focus,
-select:focus{
-  border-color: rgba(140, 146, 190, 0.55);
-  box-shadow: 0 0 0 4px rgba(151, 156, 190, 0.18);
-}
-
-/* checkbox 行 */
-.check{
-  padding: 10px 10px;
-  border-radius: 12px;
-  border: 1px solid rgba(20,20,60,0.08);
-  background: rgba(255,255,255,0.72);
-  box-shadow: var(--ui-shadow-soft);
-}
-.check input[type="checkbox"]{
-  width: 16px;
-  height: 16px;
-  accent-color: var(--ui-accent);
-}
-
-/* range 美化 */
-input[type="range"]{
-  -webkit-appearance: none;
-  appearance: none;
+.moredivider{
+  height: 1px;
+  background: #3f632c56;
   width: 100%;
-  height: 8px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(255, 167, 67, 0.705), rgba(184, 255, 53, 0.603));
-  outline: none;
-  margin-top: 8px;
-}
-
-input[type="range"]::-webkit-slider-thumb{
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  background: #fff;
-  border: 2px solid rgba(107,124,255,0.7);
-  box-shadow: 0 8px 16px rgba(30,30,70,0.15);
-  cursor: pointer;
-}
-
-input[type="range"]::-moz-range-thumb{
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  background: #fff;
-  border: 2px solid rgba(107,124,255,0.7);
-  box-shadow: 0 8px 16px rgba(30,30,70,0.15);
-  cursor: pointer;
-}
-
-/* 颜色选择器也圆一点 */
-input[type="color"]{
-  width: 44px;
-  height: 32px;
-  padding: 0;
-  border: 1px solid rgba(20,20,60,0.12);
-  border-radius: 10px;
-  background: rgba(255,255,255,0.9);
-  cursor: pointer;
-}
-
-/* 按钮：胶囊、渐变、轻微弹性 */
-.row{
-  padding: 10px;
-  gap: 10px;
-}
-button{
-  border: 0;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-weight: 500;
-  letter-spacing: .2px;
-  background: #76a749;
-  color: #ffffff;
-  transition: transform .08s ease, filter .15s ease, box-shadow .15s ease;
-}
-
-button:hover{
-  filter: brightness(1.03);
-  box-shadow: 0 12px 22px rgba(203, 216, 187, 0.26);
-}
-button:active{
-  transform: translateY(1px) scale(0.99);
-}
-button:disabled{
-  opacity: 0.55;
-  box-shadow: none;
-}
-
-/* 重置按钮稍微“次要”一点：用你的现有 id 来区分 */
-#resetBtn{
-  background: rgba(22,22,34,0.08);
-  color: rgba(22,22,34,0.80);
-  box-shadow: none;
-}
-#resetBtn:hover{
-  background: rgba(22,22,34,0.12);
-}
-
-/* 导出按钮更突出一点 */
-#exportPngBtn{
-   background: #76a749;
-}
-
-/* 滚动条更干净（Chrome/Edge） */
-.panel::-webkit-scrollbar{ width: 10px; }
-.panel::-webkit-scrollbar-thumb{
-  background: rgba(43, 87, 18, 0.404);
-  border-radius: 999px;
-  border: 1px solid rgba(116, 124, 101, 0.425);
-}
-.panel::-webkit-scrollbar-track{
-  background: transparent;
+  margin: 6px 0 10px 0;
 }

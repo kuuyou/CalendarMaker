@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>企划日历生成器</title>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -16,7 +15,8 @@
                family=ZCOOL+XiaoWei&
                family=LXGW+WenKai+Mono+TC&
                family=Playfair+Display:ital,wght@0,400..900;1,400..900&
-               family=Qahiri&family=Raleway:ital,wght@0,100..900;1,100..900&
+               family=Qahiri&
+               family=Raleway:ital,wght@0,100..900;1,100..900&
                family=Roboto+Slab:wght@100..900&
                family=WDXL+Lubrifont+SC&
                display=swap" rel="stylesheet">
@@ -54,6 +54,28 @@
             <div class="row">
                 <button id="renderBtn">生成月历</button>
             </div>
+
+            <h2>日程安排</h2>
+            <div class="row">
+                <button id="addRangeBtn" type="button">追加</button>
+                <button id="removeRangeBtn" type="button">删除</button>
+            </div>
+
+            <div id="rangesPanel"></div>
+
+            <div class="row">
+                <button id="exportPngBtn">导出PNG</button>
+                <button id="resetBtn">重置</button>
+            </div>
+            <div class="tip">
+                点击导出PNG即可下载月历。
+            </div>
+            
+            <br>
+
+            <h3 class="moreSatus">更多设置</h3>
+
+             <div class="moredivider" id="moredivider"></div>
 
             <h2>月历卡片</h2>
             <label>宽度 <span class="val" id="cardWVal"></span>
@@ -104,11 +126,9 @@
             <label>月份颜色
                 <input id="titleColor" type="color" value="#444444">
             </label>
-
             <label>分割线颜色
                 <input id="dividerColor" type="color" value="#dddddd">
             </label>
-
 
             <h2>星期</h2>
             <label>显示语言
@@ -161,7 +181,6 @@
                     <option value="'WDXL Lubrifont SC', sans-serif">WDXL Lubrifont SC</option>
                     <option value="'BoutiqueBitmap'">Boutique Bitmap 像素体</option>
                     <option value="'YDWaosagi'">夜渡鹭体</option>
-
                 </select>
             </label>
             <label>字体大小 <span class="val" id="dtSizeVal"></span>
@@ -173,15 +192,6 @@
             <label>周末颜色（周六/周日）
                 <input id="dtWeekendColor" type="color" value="#d23b3b">
             </label>
-
-            <div class="row">
-                <button id="exportPngBtn">导出PNG</button>
-                <button id="resetBtn">重置</button>
-            </div>
-
-            <div class="tip">
-                点击导出PNG即可下载月历。
-            </div>
         </aside>
 
     </div>

@@ -141,21 +141,17 @@ bindColor('dividerColor', '--divider-color');
 function applyTitleHidden(){
   const hide = !!hideTitleEl?.checked;
 
-  // 标题隐藏/显示
   titleEl?.classList.toggle('isHidden', hide);
 
-  // 分隔线隐藏/显示（跟标题同步）
   const dividerEl = document.getElementById('titleDivider');
   dividerEl?.classList.toggle('isHidden', hide);
 
-  // 面板控件禁用/启用
   if (titleFontEl) titleFontEl.disabled = hide;
   if (titleSizeEl) titleSizeEl.disabled = hide;
   if (titleAlignEl) titleAlignEl.disabled = hide;
 
   updateValueDisplays();
 }
-
 
 hideTitleEl?.addEventListener('change', applyTitleHidden);
 applyTitleHidden();
@@ -179,6 +175,234 @@ const WEEKDAYS_EN = ['S','M','T','W','T','F','S'];
 const WEEKDAYS_ZH = ['日','一','二','三','四','五','六'];
 const MONTH_CN = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
 
+const yearEl = document.getElementById('year');
+const monthEl = document.getElementById('month');
+
+/* ===== Ranges UI: dynamic add/remove (max 5) ===== */
+const MAX_RANGES = 5;
+const rangesPanel = document.getElementById('rangesPanel');
+const addRangeBtn = document.getElementById('addRangeBtn');
+const removeRangeBtn = document.getElementById('removeRangeBtn');
+
+const RANGE_PALETTE = ['#deee85', '#b8e076', '#ffa743', '#97a0ff', '#ff7aa2'];
+
+function buildRangeItem(index, init){
+
+  const enabled = init?.enabled ?? true;
+  const start = init?.start ?? 1;
+  const end = init?.end ?? 5;
+  const color = init?.color ?? RANGE_PALETTE[index % RANGE_PALETTE.length];
+
+  const wrap = document.createElement('div');
+  wrap.className = 'rngItem';
+  wrap.dataset.i = String(index);
+
+  const inline = document.createElement('div');
+  inline.className = 'inline';
+
+  // 胶囊：启用 + 颜色
+  const pillLabel = document.createElement('label');
+  pillLabel.className = 'check';
+  pillLabel.style.margin = '0';
+
+  const enableInput = document.createElement('input');
+  enableInput.type = 'checkbox';
+  enableInput.className = 'rngEnable';
+  enableInput.checked = !!enabled;
+
+  const pillText = document.createElement('span');
+  pillText.textContent = `第${index + 1}组`;
+
+  const colorInput = document.createElement('input');
+  colorInput.type = 'color';
+  colorInput.className = 'rngColor';
+  colorInput.value = color;
+  colorInput.style.verticalAlign = 'middle';
+  colorInput.style.marginLeft = '8px';
+  colorInput.style.transform = 'translateY(1px)';
+
+  pillLabel.appendChild(enableInput);
+  pillLabel.appendChild(pillText);
+  pillLabel.appendChild(colorInput);
+
+  // 起止
+  const startLabel = document.createElement('label');
+  startLabel.textContent = '开始日期';
+  const startInput = document.createElement('input');
+  startInput.type = 'number';
+  startInput.className = 'rngStart';
+  startInput.min = '1';
+  startInput.max = '31';
+  startInput.value = String(start);
+  startLabel.appendChild(startInput);
+
+  const endLabel = document.createElement('label');
+  endLabel.textContent = '结束日期';
+  const endInput = document.createElement('input');
+  endInput.type = 'number';
+  endInput.className = 'rngEnd';
+  endInput.min = '1';
+  endInput.max = '31';
+  endInput.value = String(end);
+  endLabel.appendChild(endInput);
+
+  inline.appendChild(pillLabel);
+  inline.appendChild(startLabel);
+  inline.appendChild(endLabel);
+
+  wrap.appendChild(inline);
+  return wrap;
+}
+
+
+
+function getRangeCount(){
+  return rangesPanel ? rangesPanel.querySelectorAll('.rngItem').length : 0;
+}
+
+function reindexRanges(){
+  if (!rangesPanel) return;
+  const items = [...rangesPanel.querySelectorAll('.rngItem')];
+  items.forEach((item, idx) => {
+    item.dataset.i = String(idx);
+    const colorLabel = item.querySelector('label:last-child');
+   
+  });
+}
+
+function suggestNextRange(){
+  const y = +yearEl.value;
+  const m = +monthEl.value;
+  const dim = new Date(y, m, 0).getDate();
+
+  const items = [...rangesPanel.querySelectorAll('.rngItem')];
+  if (items.length === 0) return { start: 1, end: Math.min(5, dim) };
+
+  const last = items[items.length - 1];
+  const lastEnd = +last.querySelector('.rngEnd')?.value || 1;
+  const start = clamp(lastEnd + 1, 1, dim);
+  const end = clamp(start + 4, 1, dim);
+  return { start, end };
+}
+
+function addRange(){
+  if (!rangesPanel) return;
+  const n = getRangeCount();
+  if (n >= MAX_RANGES){
+    alert('最多只能添加5个日程安排！');
+    return;
+  }
+  const sug = suggestNextRange();
+  const item = buildRangeItem(n, {
+    enabled: true,
+    start: sug.start,
+    end: sug.end,
+    color: RANGE_PALETTE[n % RANGE_PALETTE.length],
+  });
+  rangesPanel.appendChild(item);
+  reindexRanges();
+  applyRanges();
+}
+
+function removeRange(){
+  if (!rangesPanel) return;
+  const items = rangesPanel.querySelectorAll('.rngItem');
+  if (items.length <= 1) return; 
+  items[items.length - 1].remove();
+  reindexRanges();
+  applyRanges();
+}
+
+addRangeBtn?.addEventListener('click', addRange);
+removeRangeBtn?.addEventListener('click', removeRange);
+
+rangesPanel?.addEventListener('input', () => applyRanges());
+rangesPanel?.addEventListener('change', () => applyRanges());
+
+/* ===== Range highlight logic (pill) ===== */
+function clearCellRanges(){
+  dateGrid?.querySelectorAll('.cell[data-day]').forEach(c => {
+    c.classList.remove('rng', 'start', 'end', 'single');
+    c.style.removeProperty('--rng-bg');
+  });
+}
+
+function readRangesFromDOM(){
+  if (!rangesPanel) return [];
+  const items = [...rangesPanel.querySelectorAll('.rngItem')];
+
+  return items.map((item, idx) => {
+    const enabled = !!item.querySelector('.rngEnable')?.checked;
+    const start = +item.querySelector('.rngStart')?.value || 1;
+    const end = +item.querySelector('.rngEnd')?.value || 1;
+    const color = item.querySelector('.rngColor')?.value || RANGE_PALETTE[idx % RANGE_PALETTE.length];
+    return { enabled, start, end, color, idx };
+  });
+}
+
+function applyRanges(){
+  if (!dateGrid) return;
+
+  clearCellRanges();
+
+  const y = +yearEl.value;
+  const m = +monthEl.value;
+  const daysInMonth = new Date(y, m, 0).getDate();
+
+  const ranges = readRangesFromDOM();
+
+  // 后面的组覆盖前面的组：按顺序画，后画的覆盖
+  for (const r of ranges){
+    if (!r.enabled) continue;
+
+    let a = clamp(r.start, 1, daysInMonth);
+    let b = clamp(r.end, 1, daysInMonth);
+    if (a > b) [a, b] = [b, a];
+
+    const byRow = new Map(); // row -> [{cell, col}]
+    for (let d = a; d <= b; d++){
+      const cell = dateGrid.querySelector(`.cell[data-day="${d}"]`);
+      if (!cell) continue;
+
+      const row = +cell.dataset.row;
+      const col = +cell.dataset.col;
+
+      if (!byRow.has(row)) byRow.set(row, []);
+      byRow.get(row).push({ cell, col });
+    }
+
+    for (const [, arr] of byRow){
+      arr.sort((x, y) => x.col - y.col);
+
+      let segStart = 0;
+      for (let i = 0; i <= arr.length; i++){
+        const isBreak =
+          i === arr.length ||
+          (i > 0 && arr[i].col !== arr[i - 1].col + 1);
+
+        if (!isBreak) continue;
+
+        const seg = arr.slice(segStart, i);
+
+        if (seg.length === 1){
+          const c = seg[0].cell;
+          c.classList.add('rng', 'single');
+          c.style.setProperty('--rng-bg', r.color);
+        } else if (seg.length > 1){
+          seg.forEach(x => {
+            x.cell.classList.add('rng');
+            x.cell.style.setProperty('--rng-bg', r.color);
+          });
+          seg[0].cell.classList.add('start');
+          seg[seg.length - 1].cell.classList.add('end');
+        }
+
+        segStart = i;
+      }
+    }
+  }
+}
+
 function renderMonth(year, month){
   wdGrid.innerHTML = '';
   dateGrid.innerHTML = '';
@@ -197,7 +421,7 @@ function renderMonth(year, month){
     wdGrid.appendChild(d);
   }
 
-  const firstDow = new Date(year, month - 1, 1).getDay();
+  const firstDow = new Date(year, month - 1, 1).getDay(); // 0=Sun
   const daysInMonth = new Date(year, month, 0).getDate();
 
   for (let i = 0; i < firstDow; i++){
@@ -207,11 +431,17 @@ function renderMonth(year, month){
   }
 
   for (let d = 1; d <= daysInMonth; d++){
-    const dow = (firstDow + (d - 1)) % 7;
-    const isWeekend = (dow === 0 || dow === 6);
+    const idx = firstDow + (d - 1);
+    const col = idx % 7;
+    const row = Math.floor(idx / 7);
+
+    const isWeekend = (col === 0 || col === 6);
 
     const c = document.createElement('div');
     c.className = 'cell' + (isWeekend ? ' weekend' : '');
+    c.dataset.day = String(d);
+    c.dataset.col = String(col);
+    c.dataset.row = String(row);
 
     const t = document.createElement('div');
     t.className = 'dt';
@@ -220,10 +450,12 @@ function renderMonth(year, month){
     c.appendChild(t);
     dateGrid.appendChild(c);
   }
-}
 
-const yearEl = document.getElementById('year');
-const monthEl = document.getElementById('month');
+  // 月份更新后：限制 input max，并重算色带
+  const dim = daysInMonth;
+  rangesPanel?.querySelectorAll('.rngStart, .rngEnd').forEach(inp => inp.max = String(dim));
+  applyRanges();
+}
 
 document.getElementById('renderBtn')?.addEventListener('click', () => {
   renderMonth(+yearEl.value, +monthEl.value);
@@ -235,29 +467,6 @@ wdLangEl?.addEventListener('change', () => {
 
 /* ===== Buttons ===== */
 document.getElementById('resetBtn')?.addEventListener('click', () => location.reload());
-
-document.getElementById('copyCssBtn')?.addEventListener('click', async (e) => {
-  const btn = e.currentTarget;
-  const styles = getComputedStyle(root);
-
-  const vars = [
-    '--card-w','--card-h','--card-bg','--card-pad','--card-radius',
-    '--title-font','--title-size','--title-color','--title-align',
-    '--wd-font','--wd-size','--wd-color',
-    '--dt-font','--dt-size','--dt-color','--dt-weekend-color',
-    '--scale',
-  ];
-
-  const text =
-    `:root{\n` +
-    vars.map(k => `  ${k}: ${styles.getPropertyValue(k).trim()};`).join('\n') +
-    `\n}`;
-
-  await navigator.clipboard.writeText(text);
-
-  btn.textContent = '已复制';
-  setTimeout(() => (btn.textContent = '复制 CSS'), 900);
-});
 
 /* ===== Export PNG ===== */
 const nextFrame = () => new Promise(requestAnimationFrame);
@@ -298,5 +507,21 @@ document.getElementById('exportPngBtn')?.addEventListener('click', async (e) => 
 
 /* init */
 computeScale();
+
+// 默认 1 组
+if (rangesPanel && getRangeCount() === 0){
+  const y = +yearEl.value;
+  const m = +monthEl.value;
+  const dim = new Date(y, m, 0).getDate();
+  rangesPanel.appendChild(buildRangeItem(0, {
+    enabled: true,
+    start: 1,
+    end: Math.min(7, dim),
+    color: RANGE_PALETTE[0],
+  }));
+  reindexRanges();
+}
+
 renderMonth(+yearEl.value, +monthEl.value);
 updateValueDisplays();
+applyRanges();
