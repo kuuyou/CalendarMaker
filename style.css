@@ -1,59 +1,67 @@
 :root{
-  /* card */
-  --card-w: 980px;
-  --card-h: 760px;
+  --card-w: 320px;
+  --card-h: 320px;
   --card-bg: #ffffff;
-  --card-pad: 28px;
-  --card-margin: 0px;
-  --card-radius: 18px;
+  --card-pad: 16px;
+  --card-radius: 14px;
 
-  --shadow-a: 0.18;
-  --shadow-blur: 28px;
-  --shadow-y: 12px;
+  /* 间距：星期与日期区 */
+  --wd-gap: 8px;
 
-  /* grid layout */
-  --grid-gap: 10px;
+  --date-row-gap: 8px;
+  --date-col-gap: 8px;
+
+  --cell-pad-y: 6px;
+  --cell-pad-x: 0px;
+
   --cell-radius: 10px;
-  --cell-pad-y: 10px;
 
-  /* weekday header */
-  --wd-font: system-ui;
-  --wd-size: 16px;
+  --title-font: Inter, system-ui, sans-serif;
+  --wd-font: Inter, system-ui, sans-serif;
+  --dt-font: Inter, system-ui, sans-serif;
+
+  /* 基准字号（会乘 scale） */
+  --title-size: 12;
+  --wd-size: 12;
+  --dt-size: 12;
+
+  --title-align: center;
+
+  --title-color: #444444;
   --wd-color: #333333;
-  --wd-line: 1.2;
-
-  /* date number */
-  --dt-font: system-ui;
-  --dt-size: 18px;
   --dt-color: #111111;
+  --dt-weekend-color: #d23b3b;
+
+  --scale: 1;
+
+  --title-line: 1.1;
+  --wd-line: 1.15;
   --dt-line: 1.1;
 }
 
 *{ box-sizing: border-box; }
 html,body{ height: 100%; }
+
 body{
   margin: 0;
-  font-family: system-ui;
+  font-family: Inter, system-ui, sans-serif;
   color: #111;
+  overflow: hidden;
 }
 
 .layout{
+  position: fixed;
+  inset: 0;
   display: grid;
-  grid-template-columns: 360px 1fr;
-}
-
-.layout > .preview{
-  grid-column: 2;
-}
-
-.layout > .panel{
-  grid-column: 1;
+  grid-template-columns: minmax(0, 1fr) 360px;
 }
 
 .panel{
   padding: 16px;
-  border-right: 1px solid #e6e6e6;
+  border-left: 1px solid #e6e6e6;
   background: #fff;
+  height: 100%;
+  overflow: auto;
 }
 
 .panel h1{ font-size: 18px; margin: 0 0 12px; }
@@ -66,14 +74,23 @@ label{
   line-height: 1.4;
 }
 
-.inline{
-  display: flex;
-  gap: 10px;
-}
+.inline{ display: flex; gap: 10px; }
 .inline label{ flex: 1; }
 
 input[type="range"]{ width: 100%; }
-input[type="number"]{ width: 100%; padding: 6px 8px; }
+input[type="number"],
+select{
+  width: 100%;
+  padding: 6px 8px;
+}
+
+.check{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  user-select: none;
+}
 
 .row{
   display: flex;
@@ -82,15 +99,8 @@ input[type="number"]{ width: 100%; padding: 6px 8px; }
   flex-wrap: wrap;
 }
 
-button{
-  padding: 8px 10px;
-  cursor: pointer;
-}
-
-button:disabled{
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+button{ padding: 8px 10px; cursor: pointer; }
+button:disabled{ opacity: 0.5; cursor: not-allowed; }
 
 .tip{
   color: #666;
@@ -99,82 +109,126 @@ button:disabled{
   margin-top: 10px;
 }
 
+.val{
+  float: right;
+  color: #666;
+  font-variant-numeric: tabular-nums;
+}
+
 .preview{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-width: 0;
+  height: 100%;
+  overflow: auto;
+  display: grid;
+  place-items: center;
   background: #fafafa;
   padding: 24px;
 }
 
-/* calendar card */
+/* ===== Card ===== */
 .card{
   width: var(--card-w);
   height: var(--card-h);
-  margin: var(--card-margin);
 
   background: var(--card-bg);
   border: 1px solid #e6e6e6;
   border-radius: var(--card-radius);
-
   padding: var(--card-pad);
 
   display: flex;
   flex-direction: column;
-  gap: 12px;
 
-  box-shadow: 0 var(--shadow-y) var(--shadow-blur) rgba(0,0,0,var(--shadow-a));
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
+.card.isTransparent{ background: transparent; }
+
+/* ===== Title ===== */
 .monthTitle{
-  font-size: 14px;
-  color: #666;
-  letter-spacing: 0.06em;
+  font-family: var(--title-font);
+  font-size: calc(var(--title-size) * 1px * var(--scale));
+  color: var(--title-color);
+  line-height: var(--title-line);
+  font-weight: 800;
   user-select: none;
+
+  text-align: var(--title-align);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  margin-bottom: 8px;
 }
 
-/* grid */
-.grid{
+.monthTitle.isHidden{ display: none; }
+
+/* ===== Weekday ===== */
+.wdGrid{
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: var(--grid-gap);
-  flex: 1;
+  column-gap: var(--date-col-gap);
+  row-gap: 0px;
+  margin-bottom: var(--wd-gap);
+  flex: 0 0 auto;
+}
+
+.wd{
+  font-family: var(--wd-font);
+  font-size: calc(var(--wd-size) * 1px * var(--scale));
+  color: var(--wd-color);
+  line-height: var(--wd-line);
+  font-weight: 800;
+  text-align: center;
+  padding: 6px 0;
+  user-select: none;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== Dates ===== */
+.dateGrid{
+ display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+  row-gap: var(--date-row-gap);
+  column-gap: var(--date-col-gap);
+
+  align-content: space-around;/* 内容贴上 */
+  flex: 1 1 auto;         /* 撑满剩余空间 */
+
   min-height: 0;
 }
 
-/* weekday header cell */
-.wd{
-  font-family: var(--wd-font);
-  font-size: var(--wd-size);
-  color: var(--wd-color);
-  line-height: var(--wd-line);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-align: center;
-  padding: 8px 0;
-  user-select: none;
-}
-
-/* date cell */
 .cell{
   border-radius: var(--cell-radius);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--cell-pad-y) 0;
+
+  padding: calc(var(--cell-pad-y) * 1px * var(--scale)) calc(var(--cell-pad-x) * 1px * var(--scale));
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
 }
 
-/* blank cell (before 1st day) */
-.cell.blank{
-  opacity: 0;
-}
+.cell.blank{ opacity: 0; }
 
-/* date number */
 .cell .dt{
   font-family: var(--dt-font);
-  font-size: var(--dt-size);
-  color: var(--dt-color);
+  font-size: calc(var(--dt-size) * 1px * var(--scale));
   line-height: var(--dt-line);
-  font-weight: 700;
+  font-weight: 900;
   user-select: none;
+  color: var(--dt-color);
+
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
+.cell.weekend .dt{ color: var(--dt-weekend-color); }
