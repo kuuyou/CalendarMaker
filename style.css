@@ -668,4 +668,35 @@ button:disabled {
   .mSatus {
     display: none;
   }
+
+    /* 导航圆点：强制小尺寸，不吃全局 button padding */
+  .mTabs{
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .mTabs button{
+    width: 34px;
+    height: 34px;
+    padding: 0 !important;          /* 关键：干掉全局 padding */
+    border-radius: 999px;
+    min-width: 0 !important;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 800;
+    line-height: 1;
+    box-shadow: none;               /* 可选：更“干净” */
+  }
+
+  .mTabs button{
+    font-size: 14px;
+  }
+
+  .mTabs button.isActive{
+    background: #76a749;
+    color: #fff;
+  }
 }
