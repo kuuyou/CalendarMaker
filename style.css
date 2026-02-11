@@ -10,7 +10,7 @@
   font-display: swap;
 }
 
-:root{
+:root {
   /* ===== Calendar card ===== */
   --card-w: 320px;
   --card-h: 320px;
@@ -62,24 +62,30 @@
   --ui-text: #2f312e;
   --ui-muted: rgba(55, 66, 24, 0.795);
 
-  --ui-input-bg: rgba(255,255,255,0.92);
+  --ui-input-bg: rgba(255, 255, 255, 0.92);
 }
 
-*{ box-sizing: border-box; }
-html,body{ height: 100%; }
+* {
+  box-sizing: border-box;
+}
 
-body{
+html,
+body {
+  height: 100%;
+}
+
+body {
   margin: 0;
   font-family: Inter, system-ui, sans-serif;
   color: var(--ui-text);
   overflow: hidden;
   background:
-    radial-gradient(1000px 600px at 12% 8%, rgba(107,124,255,.12), transparent 60%),
-    radial-gradient(900px 540px at 85% 20%, rgba(255,122,162,.10), transparent 55%),
+    radial-gradient(1000px 600px at 12% 8%, rgba(107, 124, 255, .12), transparent 60%),
+    radial-gradient(900px 540px at 85% 20%, rgba(255, 122, 162, .10), transparent 55%),
     linear-gradient(180deg, #fafaff 0%, #f7f7ff 100%);
 }
 
-.layout{
+.layout {
   position: fixed;
   inset: 0;
   display: grid;
@@ -87,7 +93,7 @@ body{
 }
 
 /* ===== Preview area ===== */
-.preview{
+.preview {
   min-width: 0;
   height: 100%;
   overflow: auto;
@@ -98,18 +104,16 @@ body{
   background:
     radial-gradient(circle at 10% 20%, rgba(187, 224, 118, 0.2) 0%, transparent 40%),
     radial-gradient(circle at 85% 15%, rgba(208, 240, 167, 0.07) 0%, transparent 40%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(74,52,44,0.02),
-      rgba(74,52,44,0.02) 2px,
+    repeating-linear-gradient(45deg,
+      rgba(74, 52, 44, 0.02),
+      rgba(74, 52, 44, 0.02) 2px,
       transparent 2px,
-      transparent 8px
-    ),
+      transparent 8px),
     linear-gradient(180deg, #f5ffe7 0%, #f1efc9 100%);
 }
 
 /* ===== Right panel (override theme) ===== */
-.panel{
+.panel {
   height: 100%;
   overflow: auto;
 
@@ -117,17 +121,18 @@ body{
   background: var(--ui-panel-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 
   padding: 18px 16px 24px;
 }
 
-.panel h1{
+.panel h1 {
   font-size: 18px;
   margin: 4px 0 14px;
   letter-spacing: .2px;
 }
-.panel h1::after{
+
+.panel h1::after {
   content: "";
   display: block;
   height: 2px;
@@ -136,14 +141,14 @@ body{
   background: linear-gradient(90deg, var(--ui-accent), transparent);
 }
 
-.panel h2{
+.panel h2 {
   font-size: 13px;
   margin: 18px 0 10px;
   color: var(--ui-muted);
   letter-spacing: .2px;
 }
 
-label{
+label {
   display: block;
   margin: 10px 0;
   font-size: 12px;
@@ -151,21 +156,22 @@ label{
 
   padding: 10px 10px;
   border-radius: var(--ui-radius-sm);
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(20,20,60,0.08);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(20, 20, 60, 0.08);
   box-shadow: var(--ui-shadow-soft);
 }
 
-.inline{
+.inline {
   display: flex;
   gap: 10px;
   padding: 10px;
   border-radius: var(--ui-radius-sm);
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(20,20,60,0.08);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(20, 20, 60, 0.08);
   box-shadow: var(--ui-shadow-soft);
 }
-.inline label{
+
+.inline label {
   flex: 1;
   margin: 0;
   padding: 0;
@@ -174,10 +180,12 @@ label{
   box-shadow: none;
 }
 
-input[type="range"]{ width: 100%; }
+input[type="range"] {
+  width: 100%;
+}
 
 input[type="number"],
-select{
+select {
   width: 100%;
   border-radius: 12px;
   border: 1px solid rgba(15, 15, 134, 0.12);
@@ -188,12 +196,12 @@ select{
 }
 
 input[type="number"]:focus,
-select:focus{
+select:focus {
   border-color: rgba(140, 146, 190, 0.55);
   box-shadow: 0 0 0 4px rgba(151, 156, 190, 0.18);
 }
 
-.check{
+.check {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -201,27 +209,28 @@ select:focus{
 
   padding: 10px 10px;
   border-radius: 12px;
-  border: 1px solid rgba(20,20,60,0.08);
-  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(20, 20, 60, 0.08);
+  background: rgba(255, 255, 255, 0.72);
   box-shadow: var(--ui-shadow-soft);
   margin: 10px 0;
 }
-.check input[type="checkbox"]{
+
+.check input[type="checkbox"] {
   width: 16px;
   height: 16px;
   accent-color: var(--ui-accent);
 }
 
-.check span{
+.check span {
   white-space: nowrap;
 }
 
-.tip{
+.tip {
   margin-top: 10px;
   padding: 10px 12px;
   border-radius: var(--ui-radius-sm);
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(20,20,60,0.08);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(20, 20, 60, 0.08);
   box-shadow: var(--ui-shadow-soft);
 
   color: var(--ui-muted);
@@ -229,7 +238,8 @@ select:focus{
   position: relative;
   font-size: 12px;
 }
-.tip::before{
+
+.tip::before {
   content: "i";
   display: inline-grid;
   place-items: center;
@@ -240,10 +250,10 @@ select:focus{
   background: rgba(94, 151, 105, 0.267);
   color: var(--ui-accent);
   font-weight: 800;
-  font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-.row{
+.row {
   display: flex;
   gap: 10px;
   margin-top: 12px;
@@ -251,19 +261,19 @@ select:focus{
 
   padding: 10px;
   border-radius: var(--ui-radius-sm);
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(20,20,60,0.08);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(20, 20, 60, 0.08);
   box-shadow: var(--ui-shadow-soft);
 }
 
-.val{
+.val {
   float: right;
   color: rgba(20, 20, 41, 0.55);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
-input[type="range"]{
+input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -274,38 +284,39 @@ input[type="range"]{
   margin-top: 8px;
 }
 
-input[type="range"]::-webkit-slider-thumb{
+input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 18px;
   height: 18px;
   border-radius: 999px;
   background: #fff;
-  border: 2px solid rgba(107,124,255,0.7);
-  box-shadow: 0 8px 16px rgba(30,30,70,0.15);
+  border: 2px solid rgba(107, 124, 255, 0.7);
+  box-shadow: 0 8px 16px rgba(30, 30, 70, 0.15);
   cursor: pointer;
 }
-input[type="range"]::-moz-range-thumb{
+
+input[type="range"]::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 999px;
   background: #fff;
-  border: 2px solid rgba(107,124,255,0.7);
-  box-shadow: 0 8px 16px rgba(30,30,70,0.15);
+  border: 2px solid rgba(107, 124, 255, 0.7);
+  box-shadow: 0 8px 16px rgba(30, 30, 70, 0.15);
   cursor: pointer;
 }
 
-input[type="color"]{
+input[type="color"] {
   width: 44px;
   height: 32px;
   padding: 0;
-  border: 1px solid rgba(20,20,60,0.12);
+  border: 1px solid rgba(20, 20, 60, 0.12);
   border-radius: 10px;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
   cursor: pointer;
 }
 
-button{
+button {
   border: 0;
   border-radius: 999px;
   padding: 10px 14px;
@@ -316,45 +327,53 @@ button{
   cursor: pointer;
   transition: transform .08s ease, filter .15s ease, box-shadow .15s ease;
 }
-button:hover{
+
+button:hover {
   filter: brightness(1.03);
   box-shadow: 0 12px 22px rgba(203, 216, 187, 0.26);
 }
-button:active{
+
+button:active {
   transform: translateY(1px) scale(0.99);
 }
-button:disabled{
+
+button:disabled {
   opacity: 0.55;
   box-shadow: none;
   cursor: not-allowed;
 }
 
-#resetBtn{
-  background: rgba(22,22,34,0.08);
-  color: rgba(22,22,34,0.80);
+#resetBtn {
+  background: rgba(22, 22, 34, 0.08);
+  color: rgba(22, 22, 34, 0.80);
   box-shadow: none;
 }
-#resetBtn:hover{
-  background: rgba(22,22,34,0.12);
+
+#resetBtn:hover {
+  background: rgba(22, 22, 34, 0.12);
 }
 
-#exportPngBtn{
+#exportPngBtn {
   background: #76a749;
 }
 
 /* Scrollbar (Chrome/Edge) */
-.panel::-webkit-scrollbar{ width: 10px; }
-.panel::-webkit-scrollbar-thumb{
+.panel::-webkit-scrollbar {
+  width: 10px;
+}
+
+.panel::-webkit-scrollbar-thumb {
   background: rgba(43, 87, 18, 0.404);
   border-radius: 999px;
   border: 1px solid rgba(116, 124, 101, 0.425);
 }
-.panel::-webkit-scrollbar-track{
+
+.panel::-webkit-scrollbar-track {
   background: transparent;
 }
 
 /* ===== Calendar card ===== */
-.card{
+.card {
   width: var(--card-w);
   height: var(--card-h);
 
@@ -370,10 +389,12 @@ button:disabled{
   flex-shrink: 0;
 }
 
-.card.isTransparent{ background: transparent; }
+.card.isTransparent {
+  background: transparent;
+}
 
 /* Title */
-.monthTitle{
+.monthTitle {
   font-family: var(--title-font);
   font-size: calc(var(--title-size) * 1px * var(--scale));
   color: var(--title-color);
@@ -390,9 +411,11 @@ button:disabled{
   margin-left: 5px;
 }
 
-.isHidden{ display: none ; }
+.isHidden {
+  display: none;
+}
 
-.titleDivider{
+.titleDivider {
   height: 1px;
   background: var(--divider-color);
   width: 100%;
@@ -400,7 +423,7 @@ button:disabled{
 }
 
 /* Weekdays */
-.wdGrid{
+.wdGrid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   column-gap: var(--date-col-gap);
@@ -409,7 +432,7 @@ button:disabled{
   flex: 0 0 auto;
 }
 
-.wd{
+.wd {
   font-family: var(--wd-font);
   font-size: calc(var(--wd-size) * 1px * var(--scale));
   color: var(--wd-color);
@@ -425,7 +448,7 @@ button:disabled{
 }
 
 /* Dates */
-.dateGrid{
+.dateGrid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   row-gap: var(--date-row-gap);
@@ -436,7 +459,7 @@ button:disabled{
   min-height: 0;
 }
 
-.cell{
+.cell {
   border-radius: var(--cell-radius);
   display: flex;
   align-items: center;
@@ -448,13 +471,15 @@ button:disabled{
   min-height: 0;
 }
 
-.cell.rng{
+.cell.rng {
   overflow: visible;
 }
 
-.cell.blank{ opacity: 0; }
+.cell.blank {
+  opacity: 0;
+}
 
-.cell .dt{
+.cell .dt {
   font-family: var(--dt-font);
   font-size: calc(var(--dt-size) * 1px * var(--scale));
   line-height: var(--dt-line);
@@ -468,68 +493,74 @@ button:disabled{
   white-space: nowrap;
 
   position: relative;
-  z-index: 1; /* keep above range pill */
+  z-index: 1;
+  /* keep above range pill */
 }
 
-.cell.weekend .dt{ color: var(--dt-weekend-color); }
+.cell.weekend .dt {
+  color: var(--dt-weekend-color);
+}
 
 /* ===== Range highlight (pill) ===== */
-.cell.rng{
+.cell.rng {
   position: relative;
 }
 
-.cell.rng::before{
+.cell.rng::before {
   content: "";
   position: absolute;
   top: 0;
   bottom: 0;
   left: calc(var(--date-col-gap) * -0.5);
   right: calc(var(--date-col-gap) * -0.5);
-  background: var(--rng-bg, rgba(0,0,0,0.08));
+  background: var(--rng-bg, rgba(0, 0, 0, 0.08));
   z-index: 0;
 }
 
-.cell.rng.start::before{
+.cell.rng.start::before {
   left: 0;
   border-radius: 999px 0 0 999px;
 }
-.cell.rng.end::before{
+
+.cell.rng.end::before {
   right: 0;
   border-radius: 0 999px 999px 0;
 }
-.cell.rng.single::before{
+
+.cell.rng.single::before {
   left: 0;
   right: 0;
   border-radius: 999px;
 }
 
-.panel h3.moreSatus{
+.panel h3.moreSatus {
   color: #33382e;
 }
 
-.moredivider{
+.moredivider {
   height: 1px;
   background: #3f632c56;
   width: 100%;
   margin: 6px 0 10px 0;
 }
 
-.mTabs{
+.mTabs {
   display: none;
 }
 
 /* ===== 强制手机改成上下结构 ===== */
-@media (max-width: 820px){
+@media (max-width: 820px) {
 
-  html, body{
+  html,
+  body {
     height: auto !important;
   }
 
-  body{
+  body {
     overflow: auto !important;
   }
 
-  .layout{
+  .layout {
     position: relative !important;
     display: flex !important;
     flex-direction: column !important;
@@ -539,7 +570,7 @@ button:disabled{
     min-height: 100vh;
   }
 
-  .preview{
+  .preview {
     position: sticky !important;
     top: 0;
     z-index: 10;
@@ -547,40 +578,52 @@ button:disabled{
     overflow: visible !important;
   }
 
-  .panel{
+  .panel {
     width: 100% !important;
     border-left: none !important;
     border-top: 1px solid var(--ui-border);
   }
 
   /* Tabs 只在手机显示：你已经写了，这里保留即可 */
-  .mTabs{
+  .mTabs {
     display: flex !important;
   }
 
   /* 分页容器：保持可横向滚动（给 JS scrollTo 用），但禁止手指横滑冲突 */
-  .mPages{
-    display: flex;
-    gap: 12px;
-    overflow-x: auto !important;     /* 必须是 auto/scroll，hidden 会导致 JS 也滚不了 */
-    overflow-y: hidden !important;
-    scroll-snap-type: none !important;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;             /* 手指只允许上下滚，横向不滑，避免和 range 冲突 */
-    padding-bottom: 12px;
-  }
+.mPages{
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;              /* 给 JS scrollTo 用 */
+  overflow-y: hidden;
+  scroll-snap-type: none;
+  -webkit-overflow-scrolling: touch;
+
+  touch-action: pan-y;           /* 尽量只允许上下 */
+  overscroll-behavior-x: none;
+
+  padding-bottom: 12px;
+}
 
   /* 每一页占满一屏宽 */
-  .mPage{
+  .mPage {
     flex: 0 0 100%;
-    max-height: calc(65vh - 56px);   /* 56px 约等于 tabs 高度；面板高度改了这里也要改 */
+    max-height: calc(65vh - 56px);
+    /* 56px 约等于 tabs 高度；面板高度改了这里也要改 */
     overflow-y: auto;
     padding: 0 2px 14px;
+
   }
 
   /* 隐藏 mPages 横向滚动条（可选） */
-  .mPages::-webkit-scrollbar{ height: 0; }
-  .mPages{ scrollbar-width: none; }
+  .mPages::-webkit-scrollbar {
+    height: 0;
+  }
+
+  .mPages {
+    scrollbar-width: none;
+  }
+
+  .mSatus {
+    display: none;
+  }
 }
-
-

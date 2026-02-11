@@ -553,3 +553,33 @@ applyRanges();
   // 初始高亮第 1 页
   setActive(0);
 })();
+
+(function lockHorizontalSwipe(){
+  const pages = document.getElementById('mPages');
+  if (!pages) return;
+
+  let startX = 0;
+  let startY = 0;
+
+  pages.addEventListener('touchstart', (e) => {
+    // 如果手指按在 range 上，别干预
+    if (e.target && e.target.closest && e.target.closest('input[type="range"]')) return;
+
+    const t = e.touches[0];
+    startX = t.clientX;
+    startY = t.clientY;
+  }, { passive: true });
+
+  pages.addEventListener('touchmove', (e) => {
+    if (e.target && e.target.closest && e.target.closest('input[type="range"]')) return;
+
+    const t = e.touches[0];
+    const dx = Math.abs(t.clientX - startX);
+    const dy = Math.abs(t.clientY - startY);
+
+    // 横向意图更强 -> 阻止横向滚动（允许上下滚）
+    if (dx > dy && dx > 6) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+})();
