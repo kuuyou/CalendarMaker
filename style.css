@@ -518,44 +518,39 @@ button:disabled{
   display: none;
 }
 
-/* ===== Mobile layout: stack + sticky preview + tab pages ===== */
+/* ===== 强制手机改成上下结构 ===== */
 @media (max-width: 820px){
 
   html, body{
-    height: auto;
+    height: auto !important;
   }
 
   body{
     overflow: auto !important;
   }
 
-  /* 关键：把 fixed + grid 两栏改成上下 */
   .layout{
     position: relative !important;
-    inset: auto !important;
     display: flex !important;
     flex-direction: column !important;
+    grid-template-columns: none !important;
+    inset: auto !important;
     height: auto !important;
     min-height: 100vh;
   }
 
-  /* 预览固定在上面 */
   .preview{
     position: sticky !important;
     top: 0;
     z-index: 10;
     height: auto !important;
     overflow: visible !important;
-    padding: 12px !important;
   }
 
-  /* 面板在下方，变高一点 */
   .panel{
     width: 100% !important;
-    height: 65vh !important;     /* 你想更高就调这里：70vh/75vh */
-    border-left: 0 !important;
+    border-left: none !important;
     border-top: 1px solid var(--ui-border);
-    overflow: hidden !important;  /* 面板本身不竖滚 */
   }
 
   /* Tabs 只在手机显示：你已经写了，这里保留即可 */
